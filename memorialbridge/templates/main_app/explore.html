@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Explore Memorials - MemorialBridge{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="fw-bold text-primary mb-3">Explore Memorials</h1>
+            <p class="text-muted">Discover and honor the lives of remarkable individuals</p>
+        </div>
+    </div>
+
+    <!-- Search Form -->
+    <div class="row mb-4">
+        <div class="col-lg-6">
+            <form method="get" class="d-flex">
+                <input type="text" name="search" class="form-control" 
+                       placeholder="Search memorials by name..." 
+                       value="{{ search_query }}">
+                <button class="btn btn-primary ms-2" type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </div>
+        <div class="col-lg-6 text-lg-end mt-2 mt-lg-0">
+            {% if user.is_authenticated and user.userprofile.verified %}
+            <a href="{% url 'create_memorial' %}" class="btn btn-accent">
+                <i class="fas fa-plus me-2"></i>Create Memorial
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Search Results Info -->
+    {% if search_query %}
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="alert alert-info">
+                <i class="fas fa-search me-2"></i>
+                Showing results for "<strong>{{ search_query }}</strong>" - {{ memorials.count }} memorial{{ memorials.count|pluralize }} found
+                <a href="{% url 'explore' %}" class="btn btn-sm btn-outline-primary ms-2">Clear Search</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Memorials Grid -->
+    <div class="row">
+        {% for memorial in memorials %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card memorial-card h-100 border-0 shadow-sm">
+                {% if memorial.cover_image %}
+                <img src="{{ memorial.cover_image.url }}" class="card-img-top memorial-image" alt="{{ memorial.name }}">
+                {% else %}
+                <div class="card-img-top memorial-placeholder d-flex align-items-center justify-content-center bg-light">
+                    <i class="fas fa-user fa-3x text-muted"></i>
+                </div>
+                {% endif %}
+                
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-primary">{{ memorial.name }}</h5>
+                    
+                    {% if memorial.dob and memorial.dod %}
+                    <p class="text-muted small mb-2">
+                        {{ memorial.dob|date:"F j, Y" }} - {{ memorial.dod|date:"F j, Y" }}
+                    </p>
+                    {% endif %}
+                    
+                    <p class="card-text text-muted flex-grow-1">
+                        {{ memorial.bio|truncatewords:20|default:"A beloved individual remembered by many." }}
+                    </p>
+                    
+                    <div class="memorial-stats mb-3">
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <div class="stat-item">
+                                    <div class="stat-number text-success fw-bold">{{ memorial.donations_count }}</div>
+                                    <div class="stat-label small text-muted">Donations</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stat-item">
+                                    <div class="stat-number text-primary fw-bold">{{ memorial.trees_planted_count }}</div>
+                                    <div class="stat-label small text-muted">Trees Planted</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <i class="fas fa-user me-1"></i>by {{ memorial.owner.user.username }}
+                        </small>
+                        <a href="{% url 'memorial_detail' memorial.slug %}" class="btn btn-primary btn-sm">
+                            View Memorial
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="text-center py-5">
+                {% if search_query %}
+                <div class="empty-state">
+                    <i class="fas fa-search fa-4x text-muted mb-3"></i>
+                    <h3 class="text-muted">No memorials found</h3>
+                    <p class="text-muted">Try searching with different keywords or <a href="{% url 'explore' %}">browse all memorials</a>.</p>
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-heart fa-4x text-muted mb-3"></i>
+                    <h3 class="text-muted">No memorials yet</h3>
+                    <p class="text-muted">Be the first to create a memorial and honor someone special.</p>
+                    {% if user.is_authenticated and user.userprofile.verified %}
+                    <a href="{% url 'create_memorial' %}" class="btn btn-primary">Create Memorial</a>
+                    {% else %}
+                    <a href="{% url 'signup' %}" class="btn btn-primary">Sign Up to Create</a>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination would go here if needed -->
+</div>
+
+<style>
+.memorial-image {
+    height: 200px;
+    object-fit: cover;
+}
+
+.memorial-placeholder {
+    height: 200px;
+}
+
+.memorial-card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.memorial-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-number {
+    font-size: 1.5rem;
+}
+
+.empty-state {
+    padding: 3rem 1rem;
+}
+</style>
+{% endblock %}

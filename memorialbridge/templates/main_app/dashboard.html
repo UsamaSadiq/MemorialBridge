@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Dashboard - MemorialBridge{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Dashboard Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="fw-bold text-primary mb-2">
+                        Welcome back, {{ user.first_name|default:user.username }}!
+                    </h1>
+                    <p class="text-muted">Manage your memorials and honor the lives of those you remember</p>
+                </div>
+                <div>
+                    {% if user_profile.verified %}
+                    <a href="{% url 'create_memorial' %}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Create Memorial
+                    </a>
+                    {% else %}
+                    <a href="{% url 'verify_email' %}" class="btn btn-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Verify Email
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Status -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h5 class="card-title mb-2">Account Status</h5>
+                            <div class="d-flex align-items-center">
+                                {% if user_profile.verified %}
+                                <span class="badge bg-success me-3">
+                                    <i class="fas fa-check-circle me-1"></i>Verified
+                                </span>
+                                <span class="text-muted">Your account is verified and ready to create memorials</span>
+                                {% else %}
+                                <span class="badge bg-warning me-3">
+                                    <i class="fas fa-exclamation-circle me-1"></i>Unverified
+                                </span>
+                                <span class="text-muted">Please verify your email to create memorials</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-md-end">
+                            {% if not user_profile.verified %}
+                            <a href="{% url 'verify_email' %}" class="btn btn-warning">
+                                Verify Email
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Stats -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card bg-primary text-white border-0">
+                <div class="card-body text-center">
+                    <i class="fas fa-heart fa-2x mb-2"></i>
+                    <h3 class="card-title">{{ memorials.count }}</h3>
+                    <p class="card-text">Memorial{{ memorials.count|pluralize }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-success text-white border-0">
+                <div class="card-body text-center">
+                    <i class="fas fa-comments fa-2x mb-2"></i>
+                    <h3 class="card-title">
+                        {% widthratio memorials 1 0 as total_memories %}
+                        {% for memorial in memorials %}
+                            {% for memory in memorial.memories.all %}{% endfor %}
+                        {% endfor %}
+                        {{ memorials|length }}
+                    </h3>
+                    <p class="card-text">Total Memories</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-info text-white border-0">
+                <div class="card-body text-center">
+                    <i class="fas fa-eye fa-2x mb-2"></i>
+                    <h3 class="card-title">
+                        {% for memorial in memorials %}{% if memorial.visibility == 'public' %}{{ forloop.counter }}{% endif %}{% endfor %}
+                    </h3>
+                    <p class="card-text">Public Memorials</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-warning text-white border-0">
+                <div class="card-body text-center">
+                    <i class="fas fa-tree fa-2x mb-2"></i>
+                    <h3 class="card-title">
+                        {% widthratio memorials 1 0 as total_contributions %}
+                        {% for memorial in memorials %}
+                            {% widthratio memorial.donations_count 1 memorial.trees_planted_count as memorial_total %}
+                        {% endfor %}
+                        0
+                    </h3>
+                    <p class="card-text">Contributions</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Memorials -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0 text-primary">
+                            <i class="fas fa-heart me-2"></i>My Memorials
+                        </h4>
+                        {% if user_profile.verified %}
+                        <a href="{% url 'create_memorial' %}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-plus me-1"></i>Create New
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="card-body">
+                    {% if memorials %}
+                    <div class="row">
+                        {% for memorial in memorials %}
+                        <div class="col-lg-6 mb-4">
+                            <div class="card memorial-card border h-100">
+                                <div class="row g-0 h-100">
+                                    <div class="col-4">
+                                        {% if memorial.cover_image %}
+                                        <img src="{{ memorial.cover_image.url }}" class="img-fluid h-100 object-cover rounded-start" alt="{{ memorial.name }}">
+                                        {% else %}
+                                        <div class="memorial-placeholder h-100 d-flex align-items-center justify-content-center bg-light rounded-start">
+                                            <i class="fas fa-user fa-2x text-muted"></i>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="card-body d-flex flex-column h-100">
+                                            <div class="flex-grow-1">
+                                                <h6 class="card-title text-primary mb-2">{{ memorial.name }}</h6>
+                                                
+                                                {% if memorial.dob and memorial.dod %}
+                                                <p class="text-muted small mb-2">
+                                                    {{ memorial.dob|date:"M j, Y" }} - {{ memorial.dod|date:"M j, Y" }}
+                                                </p>
+                                                {% endif %}
+                                                
+                                                <p class="card-text small text-muted mb-2">
+                                                    {{ memorial.bio|truncatewords:15|default:"No description provided." }}
+                                                </p>
+                                                
+                                                <div class="memorial-stats small">
+                                                    <div class="row text-center">
+                                                        <div class="col-4">
+                                                            <div class="text-success fw-bold">{{ memorial.donations_count }}</div>
+                                                            <div class="text-muted">Donations</div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="text-primary fw-bold">{{ memorial.trees_planted_count }}</div>
+                                                            <div class="text-muted">Trees</div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="text-info fw-bold">{{ memorial.memories.count }}</div>
+                                                            <div class="text-muted">Memories</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="memorial-actions mt-3">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span class="badge bg-{% if memorial.visibility == 'public' %}success{% else %}secondary{% endif %} small">
+                                                        {{ memorial.get_visibility_display }}
+                                                    </span>
+                                                    <a href="{% url 'memorial_detail' memorial.slug %}" class="btn btn-primary btn-sm">
+                                                        View
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <div class="empty-state">
+                            <i class="fas fa-heart fa-4x text-muted mb-3"></i>
+                            <h4 class="text-muted">No memorials yet</h4>
+                            {% if user_profile.verified %}
+                            <p class="text-muted mb-4">Create your first memorial to honor someone special in your life.</p>
+                            <a href="{% url 'create_memorial' %}" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Create Your First Memorial
+                            </a>
+                            {% else %}
+                            <p class="text-muted mb-4">Please verify your email address to start creating memorials.</p>
+                            <a href="{% url 'verify_email' %}" class="btn btn-warning">
+                                <i class="fas fa-envelope me-2"></i>Verify Email Address
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary mb-3">
+                        <i class="fas fa-bolt me-2"></i>Quick Actions
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <a href="{% url 'explore' %}" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-search me-2"></i>Explore Memorials
+                            </a>
+                        </div>
+                        {% if user_profile.verified %}
+                        <div class="col-md-4 mb-3">
+                            <a href="{% url 'create_memorial' %}" class="btn btn-outline-success w-100">
+                                <i class="fas fa-plus me-2"></i>Create Memorial
+                            </a>
+                        </div>
+                        {% endif %}
+                        <div class="col-md-4 mb-3">
+                            <a href="{% url 'home' %}" class="btn btn-outline-info w-100">
+                                <i class="fas fa-home me-2"></i>Back to Home
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.memorial-card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.memorial-card:hover {
+    transform: translateY(-3px);
+}
+
+.object-cover {
+    object-fit: cover;
+}
+
+.memorial-placeholder {
+    min-height: 120px;
+}
+
+.empty-state {
+    padding: 2rem;
+}
+
+.card.bg-primary,
+.card.bg-success,
+.card.bg-info,
+.card.bg-warning {
+    transition: transform 0.2s ease-in-out;
+}
+
+.card.bg-primary:hover,
+.card.bg-success:hover,
+.card.bg-info:hover,
+.card.bg-warning:hover {
+    transform: translateY(-2px);
+}
+</style>
+{% endblock %}

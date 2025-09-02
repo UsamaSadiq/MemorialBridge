@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Verify Email - MemorialBridge{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-warning text-dark text-center">
+                    <h2 class="card-title mb-0">
+                        <i class="fas fa-envelope-open-text me-2"></i>Email Verification
+                    </h2>
+                    <p class="mb-0 mt-2">Please verify your email address to continue</p>
+                </div>
+                
+                <div class="card-body p-4 text-center">
+                    <div class="verification-icon mb-4">
+                        <i class="fas fa-envelope fa-5x text-warning"></i>
+                    </div>
+                    
+                    <h4 class="text-primary mb-3">Almost There!</h4>
+                    
+                    <p class="text-muted mb-4">
+                        We've sent a verification link to <strong>{{ user.email }}</strong>. 
+                        Please check your email and click the verification link to activate your account.
+                    </p>
+                    
+                    <div class="alert alert-info mb-4">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Note:</strong> This is a simulated verification process for the MVP. 
+                        In a production environment, you would receive an actual email with a verification link.
+                    </div>
+                    
+                    <form method="post" class="mb-4">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-check-circle me-2"></i>Simulate Email Verification
+                        </button>
+                    </form>
+                    
+                    <div class="text-center">
+                        <p class="text-muted small mb-2">
+                            Didn't receive the email? Check your spam folder or 
+                            <a href="#" class="text-primary">resend verification email</a>
+                        </p>
+                        <p class="text-muted small">
+                            Need help? <a href="#" class="text-primary">Contact support</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- What happens after verification -->
+            <div class="mt-4">
+                <div class="card border-0 bg-light">
+                    <div class="card-body">
+                        <h6 class="card-title text-primary">
+                            <i class="fas fa-star me-2"></i>After Verification
+                        </h6>
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Create unlimited memorials
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Share memories and photos
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Access your personal dashboard
+                            </li>
+                            <li>
+                                <i class="fas fa-check text-success me-2"></i>
+                                Contribute to other memorials
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.verification-icon {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.card-header {
+    border-radius: 0.375rem 0.375rem 0 0;
+}
+
+.btn-success {
+    background-color: #168E47;
+    border-color: #168E47;
+}
+
+.btn-success:hover {
+    background-color: #0f6b36;
+    border-color: #0f6b36;
+}
+
+.text-primary {
+    color: #168E47 !important;
+}
+</style>
+{% endblock %}

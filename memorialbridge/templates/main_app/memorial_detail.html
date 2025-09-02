@@ -1,0 +1,341 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ memorial.name }} - MemorialBridge{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Memorial Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="memorial-header bg-white rounded-3 shadow-sm p-4">
+                <div class="row align-items-center">
+                    <div class="col-md-3 text-center text-md-start">
+                        {% if memorial.cover_image %}
+                        <img src="{{ memorial.cover_image.url }}" class="memorial-profile-img rounded-circle shadow" alt="{{ memorial.name }}">
+                        {% else %}
+                        <div class="memorial-profile-placeholder rounded-circle shadow d-inline-flex align-items-center justify-content-center bg-light">
+                            <i class="fas fa-user fa-4x text-muted"></i>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-9 mt-3 mt-md-0">
+                        <h1 class="memorial-name fw-bold text-primary mb-2">{{ memorial.name }}</h1>
+                        {% if memorial.dob and memorial.dod %}
+                        <p class="memorial-dates text-muted h5 mb-3">
+                            {{ memorial.dob|date:"F j, Y" }} - {{ memorial.dod|date:"F j, Y" }}
+                        </p>
+                        {% endif %}
+                        
+                        <div class="memorial-actions d-flex flex-wrap gap-2 mb-3">
+                            <button class="btn btn-primary copy-link-btn" data-slug="{{ memorial.slug }}">
+                                <i class="fas fa-share me-2"></i>Share Memorial
+                            </button>
+                            {% if can_edit %}
+                            <a href="#" class="btn btn-outline-secondary">
+                                <i class="fas fa-edit me-2"></i>Edit Memorial
+                            </a>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="memorial-stats">
+                            <div class="row">
+                                <div class="col-6 col-md-3">
+                                    <div class="stat-box text-center">
+                                        <div class="stat-number text-success fw-bold h4">{{ memorial.donations_count }}</div>
+                                        <div class="stat-label text-muted small">Donations</div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="stat-box text-center">
+                                        <div class="stat-number text-primary fw-bold h4">{{ memorial.trees_planted_count }}</div>
+                                        <div class="stat-label text-muted small">Trees Planted</div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="stat-box text-center">
+                                        <div class="stat-number text-info fw-bold h4">{{ memories.count }}</div>
+                                        <div class="stat-label text-muted small">Memories</div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="stat-box text-center">
+                                        <div class="stat-number text-warning fw-bold h4">{{ memorial.total_contributions }}</div>
+                                        <div class="stat-label text-muted small">Total Impact</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Biography Section -->
+        <div class="col-lg-8">
+            {% if memorial.bio %}
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h3 class="card-title text-primary mb-3">
+                        <i class="fas fa-book me-2"></i>Biography
+                    </h3>
+                    <p class="card-text lh-lg">{{ memorial.bio|linebreaks }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Memories Section -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <h3 class="card-title text-primary mb-4">
+                        <i class="fas fa-heart me-2"></i>Memories ({{ memories.count }})
+                    </h3>
+                    
+                    <!-- Add Memory Form -->
+                    {% if user.is_authenticated %}
+                    <div class="add-memory-section mb-4 p-3 bg-light rounded">
+                        <h5 class="mb-3">Share a Memory</h5>
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="hidden" name="memory_submit" value="1">
+                            
+                            <div class="row">
+                                <div class="col-md-3 mb-3">
+                                    {{ memory_form.type.label_tag }}
+                                    {{ memory_form.type }}
+                                </div>
+                                <div class="col-md-9 mb-3">
+                                    <div id="memory-content-field">
+                                        {{ memory_form.content.label_tag }}
+                                        {{ memory_form.content }}
+                                    </div>
+                                    <div id="memory-image-field" style="display: none;">
+                                        {{ memory_form.image.label_tag }}
+                                        {{ memory_form.image }}
+                                    </div>
+                                    <div id="memory-video-field" style="display: none;">
+                                        {{ memory_form.video_url.label_tag }}
+                                        {{ memory_form.video_url }}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Add Memory
+                            </button>
+                        </form>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <a href="{% url 'login' %}">Log in</a> to share your memories of {{ memorial.name }}.
+                    </div>
+                    {% endif %}
+
+                    <!-- Memories List -->
+                    <div class="memories-list">
+                        {% for memory in memories %}
+                        <div class="memory-item border-bottom pb-3 mb-3">
+                            <div class="d-flex align-items-start">
+                                <div class="memory-avatar me-3">
+                                    <div class="avatar-circle bg-primary text-white rounded-circle d-flex align-items-center justify-content-center">
+                                        {{ memory.author.username|first|upper }}
+                                    </div>
+                                </div>
+                                <div class="memory-content flex-grow-1">
+                                    <div class="memory-header d-flex justify-content-between align-items-center mb-2">
+                                        <div>
+                                            <strong>{{ memory.author.username }}</strong>
+                                            <span class="badge bg-secondary ms-2">{{ memory.get_type_display }}</span>
+                                        </div>
+                                        <small class="text-muted">{{ memory.created_at|date:"M j, Y" }}</small>
+                                    </div>
+                                    
+                                    {% if memory.type == 'text' %}
+                                        <p class="memory-text">{{ memory.content|linebreaks }}</p>
+                                    {% elif memory.type == 'image' %}
+                                        {% if memory.image %}
+                                        <img src="{{ memory.image.url }}" class="img-fluid rounded mb-2" alt="Memory image">
+                                        {% endif %}
+                                        {% if memory.content %}
+                                        <p class="memory-text">{{ memory.content|linebreaks }}</p>
+                                        {% endif %}
+                                    {% elif memory.type == 'video' %}
+                                        {% if memory.video_url %}
+                                        <div class="video-memory mb-2">
+                                            <a href="{{ memory.video_url }}" target="_blank" class="btn btn-outline-primary">
+                                                <i class="fas fa-play me-2"></i>Watch Video
+                                            </a>
+                                        </div>
+                                        {% endif %}
+                                        {% if memory.content %}
+                                        <p class="memory-text">{{ memory.content|linebreaks }}</p>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="text-center py-4 text-muted">
+                            <i class="fas fa-heart fa-3x mb-3"></i>
+                            <p>No memories shared yet. Be the first to share a memory of {{ memorial.name }}.</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Contribution Section -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body text-center">
+                    <h4 class="card-title text-primary mb-3">Honor Their Memory</h4>
+                    <p class="text-muted mb-4">Make a meaningful contribution in honor of {{ memorial.name }}</p>
+                    
+                    <div class="d-grid gap-3">
+                        {% if user.is_authenticated %}
+                        <form method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" name="donate" class="btn btn-success btn-lg w-100">
+                                <i class="fas fa-heart me-2"></i>Donate
+                                <div class="small">Current: {{ memorial.donations_count }}</div>
+                            </button>
+                        </form>
+                        
+                        <form method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" name="plant_tree" class="btn btn-primary btn-lg w-100">
+                                <i class="fas fa-tree me-2"></i>Plant a Tree
+                                <div class="small">Current: {{ memorial.trees_planted_count }}</div>
+                            </button>
+                        </form>
+                        {% else %}
+                        <div class="alert alert-info">
+                            <a href="{% url 'login' %}">Log in</a> to make contributions.
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Memorial Info -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-primary mb-3">Memorial Details</h5>
+                    
+                    <div class="memorial-details">
+                        <div class="detail-item mb-2">
+                            <strong>Created by:</strong> {{ memorial.owner.user.username }}
+                        </div>
+                        <div class="detail-item mb-2">
+                            <strong>Created:</strong> {{ memorial.created_at|date:"F j, Y" }}
+                        </div>
+                        <div class="detail-item mb-2">
+                            <strong>Visibility:</strong> 
+                            <span class="badge bg-{% if memorial.visibility == 'public' %}success{% else %}secondary{% endif %}">
+                                {{ memorial.get_visibility_display }}
+                            </span>
+                        </div>
+                        {% if memorial.dob %}
+                        <div class="detail-item mb-2">
+                            <strong>Born:</strong> {{ memorial.dob|date:"F j, Y" }}
+                        </div>
+                        {% endif %}
+                        {% if memorial.dod %}
+                        <div class="detail-item mb-2">
+                            <strong>Passed:</strong> {{ memorial.dod|date:"F j, Y" }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.memorial-profile-img,
+.memorial-profile-placeholder {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+}
+
+.avatar-circle {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+}
+
+.memory-item:last-child {
+    border-bottom: none !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.stat-box {
+    padding: 0.5rem;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Memory type switcher
+    const typeSelect = document.getElementById('memory-type');
+    const contentField = document.getElementById('memory-content-field');
+    const imageField = document.getElementById('memory-image-field');
+    const videoField = document.getElementById('memory-video-field');
+    
+    if (typeSelect) {
+        typeSelect.addEventListener('change', function() {
+            // Hide all fields first
+            contentField.style.display = 'none';
+            imageField.style.display = 'none';
+            videoField.style.display = 'none';
+            
+            // Show appropriate field based on selection
+            if (this.value === 'text') {
+                contentField.style.display = 'block';
+            } else if (this.value === 'image') {
+                imageField.style.display = 'block';
+                contentField.style.display = 'block'; // Optional caption
+            } else if (this.value === 'video') {
+                videoField.style.display = 'block';
+                contentField.style.display = 'block'; // Optional description
+            }
+        });
+        
+        // Trigger change event on page load
+        typeSelect.dispatchEvent(new Event('change'));
+    }
+    
+    // Copy link functionality
+    const copyBtn = document.querySelector('.copy-link-btn');
+    if (copyBtn) {
+        copyBtn.addEventListener('click', function() {
+            const slug = this.dataset.slug;
+            const url = window.location.origin + '/m/' + slug + '/';
+            
+            navigator.clipboard.writeText(url).then(function() {
+                // Show success message
+                const btn = copyBtn;
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check me-2"></i>Link Copied!';
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-success');
+                
+                setTimeout(function() {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('btn-success');
+                    btn.classList.add('btn-primary');
+                }, 2000);
+            });
+        });
+    }
+});
+</script>
+{% endblock %}

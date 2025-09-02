@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - MemorialBridge{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section bg-gradient-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center min-vh-50">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Honoring Lives, Preserving Memories</h1>
+                <p class="lead mb-4">
+                    Create lasting tributes for those who have touched our hearts. 
+                    Share memories, celebrate lives, and keep their legacy alive forever.
+                </p>
+                <div class="d-flex gap-3">
+                    <a href="{% url 'explore' %}" class="btn btn-accent btn-lg">Explore Memorials</a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'create_memorial' %}" class="btn btn-outline-light btn-lg">Create Memorial</a>
+                    {% else %}
+                        <a href="{% url 'signup' %}" class="btn btn-outline-light btn-lg">Get Started</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="hero-image">
+                    <i class="fas fa-heart fa-10x text-accent opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Memorials Carousel -->
+{% if featured_memorials %}
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-primary">Featured Memorials</h2>
+            <p class="text-muted">Celebrating lives that have made a difference</p>
+        </div>
+        
+        <div id="featuredCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                {% for memorial in featured_memorials %}
+                <button type="button" data-bs-target="#featuredCarousel" data-bs-slide-to="{{ forloop.counter0 }}" 
+                        {% if forloop.first %}class="active"{% endif %} aria-label="Slide {{ forloop.counter }}"></button>
+                {% endfor %}
+            </div>
+            
+            <div class="carousel-inner">
+                {% for memorial in featured_memorials %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="card memorial-card border-0 shadow-lg">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        {% if memorial.cover_image %}
+                                            <img src="{{ memorial.cover_image.url }}" class="img-fluid h-100 object-cover rounded-start" alt="{{ memorial.name }}">
+                                        {% else %}
+                                            <div class="memorial-placeholder d-flex align-items-center justify-content-center h-100 bg-light rounded-start">
+                                                <i class="fas fa-user fa-4x text-muted"></i>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body p-4">
+                                            <h3 class="card-title text-primary">{{ memorial.name }}</h3>
+                                            {% if memorial.dob and memorial.dod %}
+                                            <p class="text-muted mb-3">
+                                                {{ memorial.dob|date:"F j, Y" }} - {{ memorial.dod|date:"F j, Y" }}
+                                            </p>
+                                            {% endif %}
+                                            <p class="card-text">{{ memorial.bio|truncatewords:30 }}</p>
+                                            
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <div class="contribution-stats">
+                                                    <span class="badge bg-success me-2">
+                                                        <i class="fas fa-heart me-1"></i>{{ memorial.donations_count }} Donations
+                                                    </span>
+                                                    <span class="badge bg-primary">
+                                                        <i class="fas fa-tree me-1"></i>{{ memorial.trees_planted_count }} Trees
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            
+                                            <a href="{% url 'memorial_detail' memorial.slug %}" class="btn btn-primary">
+                                                View Memorial <i class="fas fa-arrow-right ms-1"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <button class="carousel-control-prev" type="button" data-bs-target="#featuredCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#featuredCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- How It Works Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-primary">How It Works</h2>
+            <p class="text-muted">Creating meaningful tributes in simple steps</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4 text-center">
+                <div class="feature-box">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-user-plus fa-3x text-primary"></i>
+                    </div>
+                    <h4>Sign Up</h4>
+                    <p class="text-muted">Create your free account and verify your email to get started</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4 text-center">
+                <div class="feature-box">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-heart fa-3x text-accent"></i>
+                    </div>
+                    <h4>Create Memorial</h4>
+                    <p class="text-muted">Honor your loved one with photos, stories, and biographical information</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4 text-center">
+                <div class="feature-box">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-share-alt fa-3x text-success"></i>
+                    </div>
+                    <h4>Share & Remember</h4>
+                    <p class="text-muted">Invite others to share memories and contribute to their legacy</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Start Honoring Lives Today</h2>
+        <p class="lead mb-4">Join our community in preserving precious memories and celebrating lives</p>
+        {% if not user.is_authenticated %}
+        <a href="{% url 'signup' %}" class="btn btn-accent btn-lg">Create Your Account</a>
+        {% else %}
+        <a href="{% url 'create_memorial' %}" class="btn btn-accent btn-lg">Create a Memorial</a>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
