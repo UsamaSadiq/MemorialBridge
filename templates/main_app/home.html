@@ -5,12 +5,12 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="hero-section bg-gradient-primary text-white py-5">
+<section class="hero-section bg-gradient-primary text-primary py-5">
     <div class="container">
         <div class="row align-items-center min-vh-50">
             <div class="col-lg-6">
-                <h1 class="display-4 fw-bold mb-4">Honoring Lives, Preserving Memories</h1>
-                <p class="lead mb-4">
+                <h1 class="display-4 fw-bold mb-4 text-primary">Honoring Lives, Preserving Memories</h1>
+                <p class="lead mb-4 text-tertiary">
                     Create lasting tributes for those who have touched our hearts. 
                     Share memories, celebrate lives, and keep their legacy alive forever.
                 </p>
@@ -25,7 +25,7 @@
             </div>
             <div class="col-lg-6 text-center">
                 <div class="hero-image">
-                    <i class="fas fa-heart fa-10x text-accent opacity-75"></i>
+                    <img src="{% static 'img/logo.jpeg' %}" alt="Logo" style="width: 500px;">
                 </div>
             </div>
         </div>
@@ -86,7 +86,7 @@
                                                 </div>
                                             </div>
                                             
-                                            <a href="{% url 'memorial_detail' memorial.slug %}" class="btn btn-primary">
+                                            <a href="{% url 'memorial_detail' memorial.slug %}" class="btn btn-accent">
                                                 View Memorial <i class="fas fa-arrow-right ms-1"></i>
                                             </a>
                                         </div>

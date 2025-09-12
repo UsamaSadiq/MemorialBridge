@@ -3,12 +3,12 @@
 /* Pakistani Color Palette */
 :root {
     /* Primary Colors */
-    --pakistani-green: #168E47;      /* Pakistan flag green */
-    --pakistan-flag-green: #01411C;  /* Darker green */
-    --islamic-green: #009639;        /* Islamic green variant */
+    --pakistani-green: #eff8f0;      /* Pakistan flag green */
+    --pakistan-flag-green: #C5E9C6;  /* Darker green */
+    --islamic-green: #eff8f0;        /* Islamic green variant */
     
     /* Accent Colors */
-    --golden-yellow: #D6BF08;        /* Pakistani gold/yellow */
+    --golden-yellow: #0e6859;        /* Pakistani gold/yellow */
     --warm-beige: #F2F0E3;           /* Warm cream/beige */
     --earth-brown: #8B4513;          /* Traditional brown */
     
@@ -23,6 +23,10 @@
     --warning-amber: #FFC107;
     --danger-red: #DC3545;
     --info-blue: #17A2B8;
+
+    --green-primary: #0e6859;
+    --green-secondary: #0d4b41;
+    --gray-100: #2f2f2f;
 }
 
 /* Global Overrides */
@@ -37,10 +41,6 @@ body {
 h1, h2, h3, h4, h5, h6 {
     color: var(--pakistani-green);
     font-weight: 600;
-}
-
-.text-primary {
-    color: var(--pakistani-green) !important;
 }
 
 /* Navigation Customization */
@@ -67,17 +67,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-accent {
-    background-color: var(--golden-yellow);
-    border-color: var(--golden-yellow);
-    color: var(--dark-gray);
-    font-weight: 600;
+    background-color: var(--green-primary);
+    border-color: var(--green-primary);
+    color: white !important;
+    font-weight: 500;
 }
 
 .btn-accent:hover,
 .btn-accent:focus {
-    background-color: #B8A007;
-    border-color: #B8A007;
-    color: var(--dark-gray);
+    background-color: var(--green-secondary);
+    border-color: var(--green-secondary);
+    color: white !important;
 }
 
 /* Hero Section */
@@ -99,7 +99,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .bg-gradient-primary {
-    background: linear-gradient(135deg, var(--pakistani-green) 0%, var(--islamic-green) 100%);
+    background: var(--pakistani-green);
 }
 
 .min-vh-50 {
@@ -108,6 +108,22 @@ h1, h2, h3, h4, h5, h6 {
 
 .text-accent {
     color: var(--golden-yellow) !important;
+}
+
+.text-primary {
+    color: black !important;
+}
+
+.text-secondary {
+    color: white !important
+}
+
+.text-tertiary {
+    color: var(--gray-100) !important;
+}
+
+.nav-link {
+    color: black !important;
 }
 
 /* Card Styling */
@@ -159,17 +175,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .form-label {
-    color: var(--pakistani-green);
+    color: black;
     font-weight: 500;
 }
 
 /* Badges */
 .badge.bg-success {
-    background-color: var(--pakistani-green) !important;
+    background-color: var(--green-primary) !important;
 }
 
 .badge.bg-primary {
-    background-color: var(--pakistani-green) !important;
+    background-color: var(--green-secondary) !important;
 }
 
 /* Alerts */
