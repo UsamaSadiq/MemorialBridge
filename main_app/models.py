@@ -17,7 +17,7 @@ class UserProfile(models.Model):
 
 class Memorial(models.Model):
     """
-    Memorial model for honoring individuals
+    Memorial model for preserving memories of individuals
     """
     VISIBILITY_CHOICES = [
         ('public', 'Public'),

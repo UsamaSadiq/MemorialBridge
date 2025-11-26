@@ -7,12 +7,12 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card border-0 shadow">
-                <div class="card-header bg-primary text-white text-center">
-                    <h2 class="card-title mb-0">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header text-center py-4" style="background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark)); border-radius: var(--radius-lg) var(--radius-lg) 0 0;">
+                    <h2 class="card-title text-white mb-2">
                         <i class="fas fa-user-plus me-2"></i>Join MemorialBridge
                     </h2>
-                    <p class="mb-0 mt-2 opacity-75">Create your account to start honoring lives</p>
+                    <p class="mb-0 mt-2 text-white opacity-75">Create your account to start preserving memories</p>
                 </div>
                 
                 <div class="card-body p-4">
@@ -23,9 +23,14 @@
                             <label for="{{ form.username.id_for_label }}" class="form-label fw-bold">
                                 Username <span class="text-danger">*</span>
                             </label>
-                            <input type="text" class="form-control" id="{{ form.username.id_for_label }}" 
-                                   name="{{ form.username.name }}" value="{{ form.username.value|default:'' }}"
-                                   placeholder="Choose a unique username">
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="fas fa-user text-muted"></i>
+                                </span>
+                                <input type="text" class="form-control border-start-0" id="{{ form.username.id_for_label }}" 
+                                       name="{{ form.username.name }}" value="{{ form.username.value|default:'' }}"
+                                       placeholder="Choose a unique username" required>
+                            </div>
                             {% if form.username.errors %}
                             <div class="text-danger mt-1">
                                 {% for error in form.username.errors %}
@@ -39,9 +44,14 @@
                             <label for="{{ form.email.id_for_label }}" class="form-label fw-bold">
                                 Email Address <span class="text-danger">*</span>
                             </label>
-                            <input type="email" class="form-control" id="{{ form.email.id_for_label }}" 
-                                   name="{{ form.email.name }}" value="{{ form.email.value|default:'' }}"
-                                   placeholder="your.email@example.com">
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="fas fa-envelope text-muted"></i>
+                                </span>
+                                <input type="email" class="form-control border-start-0" id="{{ form.email.id_for_label }}" 
+                                       name="{{ form.email.name }}" value="{{ form.email.value|default:'' }}"
+                                       placeholder="your.email@example.com" required>
+                            </div>
                             {% if form.email.errors %}
                             <div class="text-danger mt-1">
                                 {% for error in form.email.errors %}
@@ -56,8 +66,13 @@
                             <label for="{{ form.password1.id_for_label }}" class="form-label fw-bold">
                                 Password <span class="text-danger">*</span>
                             </label>
-                            <input type="password" class="form-control" id="{{ form.password1.id_for_label }}" 
-                                   name="{{ form.password1.name }}" placeholder="Create a strong password">
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="fas fa-lock text-muted"></i>
+                                </span>
+                                <input type="password" class="form-control border-start-0" id="{{ form.password1.id_for_label }}" 
+                                       name="{{ form.password1.name }}" placeholder="Create a strong password" required>
+                            </div>
                             {% if form.password1.errors %}
                             <div class="text-danger mt-1">
                                 {% for error in form.password1.errors %}
@@ -71,8 +86,13 @@
                             <label for="{{ form.password2.id_for_label }}" class="form-label fw-bold">
                                 Confirm Password <span class="text-danger">*</span>
                             </label>
-                            <input type="password" class="form-control" id="{{ form.password2.id_for_label }}" 
-                                   name="{{ form.password2.name }}" placeholder="Confirm your password">
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="fas fa-lock text-muted"></i>
+                                </span>
+                                <input type="password" class="form-control border-start-0" id="{{ form.password2.id_for_label }}" 
+                                       name="{{ form.password2.name }}" placeholder="Confirm your password" required>
+                            </div>
                             {% if form.password2.errors %}
                             <div class="text-danger mt-1">
                                 {% for error in form.password2.errors %}
@@ -91,44 +111,13 @@
                         <div class="text-center">
                             <p class="text-muted mb-0">
                                 Already have an account? 
-                                <a href="{% url 'login' %}" class="text-primary text-decoration-none">Sign in here</a>
+                                <a href="{% url 'login' %}" class="text-primary text-decoration-none fw-bold">Sign in here</a>
                             </p>
                         </div>
                     </form>
                 </div>
             </div>
-            
-            <!-- Additional Info -->
-            <div class="mt-4 text-center">
-                <div class="text-muted small">
-                    <i class="fas fa-shield-alt me-2"></i>
-                    Your personal information is secure and will never be shared without your permission.
-                </div>
-            </div>
         </div>
     </div>
 </div>
-
-<style>
-.card-header {
-    border-radius: 0.375rem 0.375rem 0 0;
-}
-
-.form-control:focus {
-    border-color: #168E47;
-    box-shadow: 0 0 0 0.2rem rgba(22, 142, 71, 0.25);
-}
-
-.btn-primary {
-    background-color: #168E47;
-    border-color: #168E47;
-}
-
-.btn-primary:hover {
-    background-color: #0f6b36;
-    border-color: #0f6b36;
-}
-
-
-</style>
 {% endblock %}

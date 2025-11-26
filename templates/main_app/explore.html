@@ -9,7 +9,7 @@
     <div class="row mb-4">
         <div class="col-12">
             <h1 class="fw-bold text-primary mb-3">Explore Memorials</h1>
-            <p class="text-muted">Discover and honor the lives of remarkable individuals</p>
+            <p class="text-muted">Discover and preserve the memories of your loved ones</p>
         </div>
     </div>
 
@@ -177,7 +177,7 @@
                 {% else %}
                 <i class="fas fa-heart fa-4x text-muted mb-3 d-block"></i>
                 <h3 class="text-muted mb-3">No memorials yet</h3>
-                <p class="text-muted mb-4">Be the first to create a memorial and honor someone special.</p>
+                <p class="text-muted mb-4">Be the first to create a memorial and preserve memories of someone special.</p>
                 {% if user.is_authenticated and user.userprofile.verified %}
                 <a href="{% url 'create_memorial' %}" class="btn btn-primary btn-lg">
                     <i class="fas fa-plus me-2"></i>Create Memorial

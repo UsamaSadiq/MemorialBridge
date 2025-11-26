@@ -1,6 +1,6 @@
 # MemorialBridge - A Cultural Tribute (Pakistan Theme) MVP
 
-A Django web application for honoring lives and preserving memories. This project allows users to create memorials, share memories, and contribute to meaningful tributes.
+A Django web application for preserving memories and celebrating lives. This project allows users to create memorials, share memories, and contribute to meaningful tributes.
 
 ## Features
 

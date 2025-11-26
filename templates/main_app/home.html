@@ -3,73 +3,120 @@
 
 {% block title %}Home - MemorialBridge{% endblock %}
 
-{% block content %}
-<!-- Hero Section -->
-<section class="hero-section position-relative overflow-hidden">
-    <!-- Decorative Background Shapes -->
-    <div class="hero-shape-1"></div>
-    <div class="hero-shape-2"></div>
+{% block extra_css %}
+<style>
+    .hero-cover-image {
+        background: url('{% static "img/cover.png" %}') center/cover no-repeat;
+        height: 60vh;
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
     
-    <div class="container py-5">
-        <div class="row align-items-center min-vh-75">
-            <div class="col-lg-6">
-                <span class="badge badge-soft-primary mb-3 animate-fade-in">
-                    <i class="fas fa-heart me-1"></i>Preserving Legacies Since 2024
-                </span>
-                
-                <h1 class="display-3 fw-bold mb-4 animate-slide-up">
-                    Honoring Lives,<br>
-                    <span class="text-gradient">Preserving Memories</span>
-                </h1>
-                
-                <p class="lead mb-4 text-secondary animate-slide-up-delay" style="line-height: 1.8;">
-                    Create lasting tributes for those who have touched our hearts. 
-                    Share memories, celebrate lives, and keep their legacy alive forever.
-                </p>
-                
-                <div class="d-flex flex-wrap gap-3 mb-4 animate-slide-up-delay-2">
-                    <a href="{% url 'explore' %}" class="btn btn-primary btn-lg shadow-lg">
-                        <i class="fas fa-compass me-2"></i>Explore Memorials
+    .hero-cover-image::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 200px;
+        background: linear-gradient(to bottom, transparent 0%, rgba(14, 104, 89, 0.05) 100%);
+        pointer-events: none;
+        z-index: 1;
+    }
+    
+    .hero-cover-image .container {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .hero-description {
+        line-height: 1.8;
+        max-width: 800px;
+        margin: 0 auto;
+        color: #000;
+    }
+    
+    .trust-stat-number {
+        font-size: 2rem;
+    }
+    
+    .section-gradient-1 {
+        background: linear-gradient(180deg, rgba(14, 104, 89, 0.03), rgba(14, 104, 89, 0.05));
+    }
+    
+    .section-gradient-2 {
+        background: linear-gradient(180deg, rgba(14, 104, 89, 0.03), rgba(14, 104, 89, 0.08));
+    }
+    
+    .section-gradient-3 {
+        background: linear-gradient(180deg, rgba(14, 104, 89, 0.08), rgba(14, 104, 89, 0.12));
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Banner Section -->
+<section class="hero-banner position-relative overflow-hidden">
+    <!-- Cover Image -->
+    <div class="hero-cover-image">
+        <div class="container text-center text-white py-5">
+            <span class="badge bg-primary text-white mb-3 px-3 py-2 animate-fade-in">
+                <i class="fas fa-heart me-1"></i>Preserving Legacies Since 2024
+            </span>
+            
+            <h1 class="display-3 fw-bold mb-4 animate-slide-up">
+                Preserving Memories,<br>
+                <span class="text-warning">Honoring Lives</span>
+            </h1>
+            
+            <p class="lead mb-4 animate-slide-up-delay hero-description">
+                Create lasting tributes for those who have touched our hearts. <br>
+                Share memories, celebrate lives, and keep their legacy alive forever.
+            </p>
+            
+            <div class="d-flex flex-wrap gap-3 mb-4 justify-content-center animate-slide-up-delay-2">
+                <a href="{% url 'explore' %}" class="btn btn-primary btn-lg shadow-lg">
+                    <i class="fas fa-compass me-2"></i>Explore Memorials
+                </a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'create_memorial' %}" class="btn btn-accent btn-lg shadow-lg">
+                        <i class="fas fa-plus me-2"></i>Create Memorial
                     </a>
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'create_memorial' %}" class="btn btn-outline-primary btn-lg">
-                            <i class="fas fa-plus me-2"></i>Create Memorial
-                        </a>
-                    {% else %}
-                        <a href="{% url 'signup' %}" class="btn btn-outline-primary btn-lg">
-                            Get Started Free
-                        </a>
-                    {% endif %}
-                </div>
-                
-                <!-- Trust Indicators -->
-                <div class="trust-indicators animate-fade-in-delay">
-                    <div class="row text-center text-md-start g-3">
-                        <div class="col-4">
-                            <div class="trust-stat">
-                                <div class="fw-bold text-primary" style="font-size: 1.5rem;">1000+</div>
-                                <div class="small text-muted">Memorials</div>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="trust-stat">
-                                <div class="fw-bold text-primary" style="font-size: 1.5rem;">5000+</div>
-                                <div class="small text-muted">Memories Shared</div>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="trust-stat">
-                                <div class="fw-bold text-primary" style="font-size: 1.5rem;">100%</div>
-                                <div class="small text-muted">Free Forever</div>
-                            </div>
+                {% else %}
+                    <a href="{% url 'signup' %}" class="btn btn-accent btn-lg shadow-lg">
+                        Get Started Free
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Trust Indicators Below Banner -->
+    <div class="py-4 section-gradient-1">
+        <div class="container">
+            <div class="trust-indicators animate-fade-in-delay">
+                <div class="row text-center g-3">
+                    <div class="col-md-4">
+                        <div class="trust-stat">
+                            <div class="fw-bold text-primary trust-stat-number">1000+</div>
+                            <div class="text-muted">Memorials</div>
                         </div>
                     </div>
-                </div>
-            </div>
-            
-            <div class="col-lg-6 text-center d-none d-lg-block">
-                <div class="hero-image animate-float">
-                    <img src="{% static 'img/logo.jpeg' %}" alt="MemorialBridge" class="img-fluid rounded-lg shadow-xl" style="max-width: 500px;">
+                    <div class="col-md-4">
+                        <div class="trust-stat">
+                            <div class="fw-bold text-primary trust-stat-number">5000+</div>
+                            <div class="text-muted">Memories Shared</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="trust-stat">
+                            <div class="fw-bold text-primary trust-stat-number">100%</div>
+                            <div class="text-muted">Free Forever</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -78,7 +125,7 @@
 
 <!-- Featured Memorials Carousel -->
 {% if featured_memorials %}
-<section class="py-5">
+<section class="py-5 section-gradient-2">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="fw-bold text-primary">Featured Memorials</h2>
@@ -157,7 +204,7 @@
 {% endif %}
 
 <!-- How It Works Section -->
-<section class="py-5 bg-light">
+<section class="py-5 section-gradient-3">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="fw-bold text-primary">How It Works</h2>
@@ -181,7 +228,7 @@
                         <i class="fas fa-heart fa-3x text-accent"></i>
                     </div>
                     <h4>Create Memorial</h4>
-                    <p class="text-muted">Honor your loved one with photos, stories, and biographical information</p>
+                    <p class="text-muted">Preserve memories of your loved one with photos, stories, and biographical information</p>
                 </div>
             </div>
             
@@ -195,19 +242,6 @@
                 </div>
             </div>
         </div>
-    </div>
-</section>
-
-<!-- Call to Action -->
-<section class="py-5 bg-primary text-white">
-    <div class="container text-center">
-        <h2 class="fw-bold mb-3">Start Honoring Lives Today</h2>
-        <p class="lead mb-4">Join our community in preserving precious memories and celebrating lives</p>
-        {% if not user.is_authenticated %}
-        <a href="{% url 'signup' %}" class="btn btn-accent btn-lg">Create Your Account</a>
-        {% else %}
-        <a href="{% url 'create_memorial' %}" class="btn btn-accent btn-lg">Create a Memorial</a>
-        {% endif %}
     </div>
 </section>
 {% endblock %}
