@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeMemoryTypeToggle();
     initializeImagePreviews();
     initializeScrollAnimations();
+    initializeSearchClear();
     
     // Add fade-in animation to page elements
     addPageAnimations();
@@ -23,6 +24,31 @@ function initializeTooltips() {
     tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
+}
+
+/**
+ * Initialize search clear button
+ */
+function initializeSearchClear() {
+    const searchInput = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearSearch');
+    
+    if (searchInput && clearBtn) {
+        searchInput.addEventListener('input', function() {
+            clearBtn.style.display = this.value ? 'block' : 'none';
+        });
+        
+        clearBtn.addEventListener('click', function() {
+            searchInput.value = '';
+            this.style.display = 'none';
+            searchInput.focus();
+            // Optionally submit form to clear results
+            const form = searchInput.closest('form');
+            if (form) {
+                form.submit();
+            }
+        });
+    }
 }
 
 /**

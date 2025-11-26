@@ -8,27 +8,32 @@
     <!-- Memorial Header -->
     <div class="row mb-4">
         <div class="col-12">
-            <div class="memorial-header bg-white rounded-3 shadow-sm p-4">
+            <div class="memorial-header bg-white rounded-lg shadow-sm p-4">
                 <div class="row align-items-center">
-                    <div class="col-md-3 text-center text-md-start">
+                    <div class="col-md-3 text-center text-md-start mb-3 mb-md-0">
                         {% if memorial.cover_image %}
-                        <img src="{{ memorial.cover_image.url }}" class="memorial-profile-img rounded-circle shadow" alt="{{ memorial.name }}">
+                        <img src="{{ memorial.cover_image.url }}" 
+                             class="memorial-profile-img rounded-circle shadow" 
+                             alt="{{ memorial.name }}"
+                             style="width: 150px; height: 150px; object-fit: cover;">
                         {% else %}
-                        <div class="memorial-profile-placeholder rounded-circle shadow d-inline-flex align-items-center justify-content-center bg-light">
+                        <div class="memorial-profile-placeholder rounded-circle shadow d-inline-flex align-items-center justify-content-center bg-light"
+                             style="width: 150px; height: 150px;">
                             <i class="fas fa-user fa-4x text-muted"></i>
                         </div>
                         {% endif %}
                     </div>
-                    <div class="col-md-9 mt-3 mt-md-0">
-                        <h1 class="memorial-name fw-bold text-primary mb-2">{{ memorial.name }}</h1>
+                    <div class="col-md-9">
+                        <h1 class="memorial-name fw-bold mb-2" style="color: var(--color-primary-dark);">{{ memorial.name }}</h1>
                         {% if memorial.dob and memorial.dod %}
                         <p class="memorial-dates text-muted h5 mb-3">
+                            <i class="fas fa-calendar-alt me-2"></i>
                             {{ memorial.dob|date:"F j, Y" }} - {{ memorial.dod|date:"F j, Y" }}
                         </p>
                         {% endif %}
                         
                         <div class="memorial-actions d-flex flex-wrap gap-2 mb-3">
-                            <button class="btn btn-primary copy-link-btn" data-slug="{{ memorial.slug }}">
+                            <button class="btn btn-primary copy-link-btn shadow-sm" data-slug="{{ memorial.slug }}">
                                 <i class="fas fa-share me-2"></i>Share Memorial
                             </button>
                             {% if can_edit %}
@@ -39,28 +44,28 @@
                         </div>
                         
                         <div class="memorial-stats">
-                            <div class="row">
+                            <div class="row g-3">
                                 <div class="col-6 col-md-3">
-                                    <div class="stat-box text-center">
-                                        <div class="stat-number text-success fw-bold h4">{{ memorial.donations_count }}</div>
+                                    <div class="stat-box text-center p-3 rounded bg-light">
+                                        <div class="stat-number text-success fw-bold h4 mb-0">{{ memorial.donations_count }}</div>
                                         <div class="stat-label text-muted small">Donations</div>
                                     </div>
                                 </div>
                                 <div class="col-6 col-md-3">
-                                    <div class="stat-box text-center">
-                                        <div class="stat-number text-primary fw-bold h4">{{ memorial.trees_planted_count }}</div>
+                                    <div class="stat-box text-center p-3 rounded bg-light">
+                                        <div class="stat-number text-primary fw-bold h4 mb-0">{{ memorial.trees_planted_count }}</div>
                                         <div class="stat-label text-muted small">Trees Planted</div>
                                     </div>
                                 </div>
                                 <div class="col-6 col-md-3">
-                                    <div class="stat-box text-center">
-                                        <div class="stat-number text-info fw-bold h4">{{ memories.count }}</div>
+                                    <div class="stat-box text-center p-3 rounded bg-light">
+                                        <div class="stat-number text-info fw-bold h4 mb-0">{{ memories.count }}</div>
                                         <div class="stat-label text-muted small">Memories</div>
                                     </div>
                                 </div>
                                 <div class="col-6 col-md-3">
-                                    <div class="stat-box text-center">
-                                        <div class="stat-number text-warning fw-bold h4">{{ memorial.total_contributions }}</div>
+                                    <div class="stat-box text-center p-3 rounded bg-light">
+                                        <div class="stat-number text-warning fw-bold h4 mb-0">{{ memorial.total_contributions }}</div>
                                         <div class="stat-label text-muted small">Total Impact</div>
                                     </div>
                                 </div>
@@ -78,10 +83,10 @@
             {% if memorial.bio %}
             <div class="card border-0 shadow-sm mb-4">
                 <div class="card-body">
-                    <h3 class="card-title text-primary mb-3">
+                    <h3 class="card-title mb-3" style="color: var(--color-primary);">
                         <i class="fas fa-book me-2"></i>Biography
                     </h3>
-                    <p class="card-text lh-lg">{{ memorial.bio|linebreaks }}</p>
+                    <p class="card-text lh-lg" style="font-size: 1.05rem;">{{ memorial.bio|linebreaks }}</p>
                 </div>
             </div>
             {% endif %}
@@ -89,14 +94,14 @@
             <!-- Memories Section -->
             <div class="card border-0 shadow-sm mb-4">
                 <div class="card-body">
-                    <h3 class="card-title text-primary mb-4">
-                        <i class="fas fa-heart me-2"></i>Memories ({{ memories.count }})
+                    <h3 class="card-title mb-4" style="color: var(--color-primary);">
+                        <i class="fas fa-heart me-2"></i>Memories <span class="badge bg-primary">{{ memories.count }}</span>
                     </h3>
                     
                     <!-- Add Memory Form -->
                     {% if user.is_authenticated %}
-                    <div class="add-memory-section mb-4 p-3 bg-light rounded">
-                        <h5 class="mb-3">Share a Memory</h5>
+                    <div class="add-memory-section mb-4 p-4 rounded" style="background-color: var(--color-gray-50);">
+                        <h5 class="mb-3"><i class="fas fa-pen me-2"></i>Share a Memory</h5>
                         <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <input type="hidden" name="memory_submit" value="1">
@@ -128,9 +133,9 @@
                         </form>
                     </div>
                     {% else %}
-                    <div class="alert alert-info">
+                    <div class="alert alert-info mb-4">
                         <i class="fas fa-info-circle me-2"></i>
-                        <a href="{% url 'login' %}">Log in</a> to share your memories of {{ memorial.name }}.
+                        <a href="{% url 'login' %}" class="alert-link">Log in</a> to share your memories of {{ memorial.name }}.
                     </div>
                     {% endif %}
 
@@ -178,9 +183,9 @@
                             </div>
                         </div>
                         {% empty %}
-                        <div class="text-center py-4 text-muted">
-                            <i class="fas fa-heart fa-3x mb-3"></i>
-                            <p>No memories shared yet. Be the first to share a memory of {{ memorial.name }}.</p>
+                        <div class="text-center py-5 text-muted">
+                            <i class="fas fa-heart fa-3x mb-3 d-block opacity-50"></i>
+                            <p class="mb-0">No memories shared yet. Be the first to share a memory of {{ memorial.name }}.</p>
                         </div>
                         {% endfor %}
                     </div>
@@ -192,30 +197,32 @@
         <div class="col-lg-4">
             <!-- Contribution Section -->
             <div class="card border-0 shadow-sm mb-4">
-                <div class="card-body text-center">
-                    <h4 class="card-title text-primary mb-3">Honor Their Memory</h4>
+                <div class="card-body text-center p-4">
+                    <h4 class="card-title mb-3" style="color: var(--color-primary);">
+                        <i class="fas fa-hands-helping me-2"></i>Honor Their Memory
+                    </h4>
                     <p class="text-muted mb-4">Make a meaningful contribution in honor of {{ memorial.name }}</p>
                     
                     <div class="d-grid gap-3">
                         {% if user.is_authenticated %}
                         <form method="post" class="d-inline">
                             {% csrf_token %}
-                            <button type="submit" name="donate" class="btn btn-success btn-lg w-100">
+                            <button type="submit" name="donate" class="btn btn-success btn-lg w-100 shadow-sm">
                                 <i class="fas fa-heart me-2"></i>Donate
-                                <div class="small">Current: {{ memorial.donations_count }}</div>
+                                <div class="small mt-1 opacity-75">Current: {{ memorial.donations_count }}</div>
                             </button>
                         </form>
                         
                         <form method="post" class="d-inline">
                             {% csrf_token %}
-                            <button type="submit" name="plant_tree" class="btn btn-primary btn-lg w-100">
+                            <button type="submit" name="plant_tree" class="btn btn-primary btn-lg w-100 shadow-sm">
                                 <i class="fas fa-tree me-2"></i>Plant a Tree
-                                <div class="small">Current: {{ memorial.trees_planted_count }}</div>
+                                <div class="small mt-1 opacity-75">Current: {{ memorial.trees_planted_count }}</div>
                             </button>
                         </form>
                         {% else %}
-                        <div class="alert alert-info">
-                            <a href="{% url 'login' %}">Log in</a> to make contributions.
+                        <div class="alert alert-info mb-0">
+                            <a href="{% url 'login' %}" class="alert-link">Log in</a> to make contributions.
                         </div>
                         {% endif %}
                     </div>
@@ -260,25 +267,15 @@
 <style>
 .memorial-profile-img,
 .memorial-profile-placeholder {
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 150px;
     object-fit: cover;
-}
-
-.avatar-circle {
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
 }
 
 .memory-item:last-child {
     border-bottom: none !important;
     margin-bottom: 0 !important;
     padding-bottom: 0 !important;
-}
-
-.stat-box {
-    padding: 0.5rem;
 }
 </style>
 

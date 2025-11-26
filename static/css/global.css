@@ -1,29 +1,106 @@
 /* MemorialBridge - Pakistani Theme Global Styles */
 
-/* Pakistani Color Palette */
+/* Enhanced Design System */
 :root {
-    /* Primary Colors */
-    --pakistani-green: #eff8f0;      /* Pakistan flag green */
-    --pakistan-flag-green: #C5E9C6;  /* Darker green */
-    --islamic-green: #eff8f0;        /* Islamic green variant */
+    /* Primary Colors - Pakistan Theme */
+    --color-primary: #0e6859;
+    --color-primary-light: #C5E9C6;
+    --color-primary-lighter: #eff8f0;
+    --color-primary-dark: #0d4b41;
     
     /* Accent Colors */
-    --golden-yellow: #0e6859;        /* Pakistani gold/yellow */
-    --warm-beige: #F2F0E3;           /* Warm cream/beige */
-    --earth-brown: #8B4513;          /* Traditional brown */
+    --color-accent: #D6BF08;
+    --color-accent-dark: #B09F06;
+    --color-golden: #FFD700;
     
-    /* Supporting Colors */
+    /* Semantic Colors */
+    --color-success: #28a745;
+    --color-danger: #dc3545;
+    --color-warning: #ffc107;
+    --color-info: #17a2b8;
+    
+    /* Neutrals */
+    --color-white: #ffffff;
+    --color-gray-50: #f8f9fa;
+    --color-gray-100: #e9ecef;
+    --color-gray-200: #dee2e6;
+    --color-gray-300: #ced4da;
+    --color-gray-400: #adb5bd;
+    --color-gray-500: #6c757d;
+    --color-gray-600: #495057;
+    --color-gray-700: #343a40;
+    --color-gray-800: #212529;
+    --color-gray-900: #0d0d0d;
+    
+    /* Background Colors */
+    --color-bg-primary: #ffffff;
+    --color-bg-secondary: #F2F0E3;
+    --color-bg-light: #f8f9fa;
+    
+    /* Typography Scale */
+    --font-size-xs: 0.75rem;      /* 12px */
+    --font-size-sm: 0.875rem;     /* 14px */
+    --font-size-base: 1rem;       /* 16px */
+    --font-size-lg: 1.125rem;     /* 18px */
+    --font-size-xl: 1.25rem;      /* 20px */
+    --font-size-2xl: 1.5rem;      /* 24px */
+    --font-size-3xl: 1.875rem;    /* 30px */
+    --font-size-4xl: 2.25rem;     /* 36px */
+    --font-size-5xl: 3rem;        /* 48px */
+    
+    /* Spacing Scale */
+    --spacing-xs: 0.25rem;   /* 4px */
+    --spacing-sm: 0.5rem;    /* 8px */
+    --spacing-md: 1rem;      /* 16px */
+    --spacing-lg: 1.5rem;    /* 24px */
+    --spacing-xl: 2rem;      /* 32px */
+    --spacing-2xl: 3rem;     /* 48px */
+    --spacing-3xl: 4rem;     /* 64px */
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    
+    /* Border Radius */
+    --radius-sm: 0.25rem;    /* 4px */
+    --radius-md: 0.5rem;     /* 8px */
+    --radius-lg: 0.75rem;    /* 12px */
+    --radius-xl: 1rem;       /* 16px */
+    --radius-2xl: 1.5rem;    /* 24px */
+    --radius-full: 9999px;
+    
+    /* Transitions */
+    --transition-fast: 150ms ease-in-out;
+    --transition-base: 200ms ease-in-out;
+    --transition-slow: 300ms ease-in-out;
+    
+    /* Z-Index Scale */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+    --z-popover: 1060;
+    --z-tooltip: 1070;
+    
+    /* Legacy Support */
+    --pakistani-green: #eff8f0;
+    --pakistan-flag-green: #C5E9C6;
+    --islamic-green: #eff8f0;
+    --golden-yellow: #0e6859;
+    --warm-beige: #F2F0E3;
+    --earth-brown: #8B4513;
     --pure-white: #FFFFFF;
     --soft-gray: #F8F9FA;
     --medium-gray: #6C757D;
     --dark-gray: #343A40;
-    
-    /* Status Colors with Pakistani influence */
-    --success-green: var(--pakistani-green);
+    --success-green: var(--color-primary);
     --warning-amber: #FFC107;
     --danger-red: #DC3545;
     --info-blue: #17A2B8;
-
     --green-primary: #0e6859;
     --green-secondary: #0d4b41;
     --gray-100: #2f2f2f;
@@ -33,56 +110,216 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    color: var(--dark-gray);
-    background-color: var(--warm-beige);
+    color: var(--color-gray-800);
+    background-color: var(--color-bg-secondary);
 }
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-    color: var(--pakistani-green);
+    color: var(--color-primary-dark);
     font-weight: 600;
+    line-height: 1.3;
+}
+
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--color-primary-dark);
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Focus Styles for Accessibility */
+*:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Skip to Content Link */
+.skip-to-content {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--color-primary);
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    z-index: 100;
+    border-radius: 0 0 var(--radius-md) 0;
+}
+
+.skip-to-content:focus {
+    top: 0;
 }
 
 /* Navigation Customization */
-.navbar-brand {
-    font-size: 1.5rem;
-    color: var(--pure-white) !important;
+.navbar {
+    transition: all var(--transition-base);
+    box-shadow: var(--shadow-sm);
 }
 
+.navbar-brand {
+    font-size: 1.5rem;
+    color: var(--color-primary) !important;
+    font-weight: 700;
+    transition: transform var(--transition-fast);
+}
+
+.navbar-brand:hover {
+    transform: scale(1.05);
+}
+
+.nav-link {
+    color: var(--color-gray-700) !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    position: relative;
+    transition: color var(--transition-fast);
+}
+
+.nav-link:hover {
+    color: var(--color-primary) !important;
+}
+
+.nav-link.active {
+    color: var(--color-primary) !important;
+    font-weight: 600;
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 2px;
+    background-color: var(--color-primary);
+    border-radius: var(--radius-full);
+}
+
+/* User Avatar in Navigation */
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+    border-radius: var(--radius-full);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+}
+
+.dropdown-menu {
+    border: none;
+    box-shadow: var(--shadow-lg);
+    min-width: 200px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.dropdown-item {
+    padding: 0.75rem 1.25rem;
+    transition: all var(--transition-fast);
+}
+
+.dropdown-item:hover {
+    background-color: var(--color-gray-50);
+    padding-left: 1.5rem;
+    color: var(--color-primary);
+}
+
+.dropdown-divider {
+    margin: 0.5rem 0;
+}
+
+/* Buttons */
 .bg-primary {
-    background-color: var(--pakistani-green) !important;
+    background-color: var(--color-primary-lighter) !important;
+}
+
+.btn {
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    transition: all var(--transition-base);
+    border: none;
+}
+
+.btn:focus-visible {
+    box-shadow: 0 0 0 0.25rem rgba(14, 104, 89, 0.3);
 }
 
 .btn-primary {
-    background-color: var(--pakistani-green);
-    border-color: var(--pakistani-green);
-    color: var(--pure-white);
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-white);
+    box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover,
 .btn-primary:focus {
-    background-color: var(--pakistan-flag-green);
-    border-color: var(--pakistan-flag-green);
-    color: var(--pure-white);
+    background-color: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
+    color: var(--color-white);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
 }
 
 .btn-accent {
-    background-color: var(--green-primary);
-    border-color: var(--green-primary);
-    color: white !important;
-    font-weight: 500;
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-gray-900) !important;
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
 }
 
 .btn-accent:hover,
 .btn-accent:focus {
-    background-color: var(--green-secondary);
-    border-color: var(--green-secondary);
-    color: white !important;
+    background-color: var(--color-accent-dark);
+    border-color: var(--color-accent-dark);
+    color: var(--color-gray-900) !important;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-outline-primary {
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+    background: transparent;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--color-primary);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.btn-lg {
+    padding: 0.75rem 2rem;
+    font-size: var(--font-size-lg);
+}
+
+.btn-sm {
+    padding: 0.375rem 1rem;
+    font-size: var(--font-size-sm);
 }
 
 /* Hero Section */
 .hero-section {
-    background: linear-gradient(135deg, var(--pakistani-green) 0%, var(--islamic-green) 100%);
+    background: linear-gradient(135deg, var(--color-primary-lighter) 0%, #ffffff 100%);
     position: relative;
     overflow: hidden;
 }
@@ -94,162 +331,469 @@ h1, h2, h3, h4, h5, h6 {
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.08"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.08"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    background: radial-gradient(circle at 30% 50%, rgba(14, 104, 89, 0.05) 0%, transparent 50%);
     pointer-events: none;
 }
 
 .bg-gradient-primary {
-    background: var(--pakistani-green);
+    background: var(--color-primary-lighter);
 }
 
 .min-vh-50 {
     min-height: 50vh;
 }
 
+.min-vh-75 {
+    min-height: 75vh;
+}
+
+/* Text Utilities */
 .text-accent {
-    color: var(--golden-yellow) !important;
+    color: var(--color-accent) !important;
 }
 
 .text-primary {
-    color: black !important;
+    color: var(--color-primary-dark) !important;
 }
 
 .text-secondary {
-    color: white !important
+    color: var(--color-gray-600) !important;
 }
 
 .text-tertiary {
-    color: var(--gray-100) !important;
+    color: var(--color-gray-700) !important;
 }
 
-.nav-link {
-    color: black !important;
+.text-gradient {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+}
+
+/* Badge Styles */
+.badge {
+    padding: 0.375rem 0.75rem;
+    font-weight: 500;
+    border-radius: var(--radius-md);
+}
+
+.badge-soft-primary {
+    background-color: rgba(14, 104, 89, 0.1);
+    color: var(--color-primary);
+    font-weight: 600;
 }
 
 /* Card Styling */
 .card {
     border: none;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
-    transition: all 0.3s ease;
-    background-color: var(--pure-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-base);
+    background-color: var(--color-white);
 }
 
 .card:hover {
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    transform: translateY(-2px);
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-4px);
 }
 
 .card-header {
-    background-color: var(--pakistani-green);
-    color: var(--pure-white);
+    background-color: var(--color-primary);
+    color: var(--color-white);
     border-bottom: none;
     font-weight: 600;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 
 /* Memorial Cards */
+.memorial-card-wrapper {
+    height: 100%;
+    margin-bottom: var(--spacing-lg);
+}
+
 .memorial-card {
-    transition: all 0.3s ease;
-    border: 1px solid rgba(22, 142, 71, 0.1);
+    background: white;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-base);
+    border: 1px solid rgba(14, 104, 89, 0.1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .memorial-card:hover {
-    border-color: var(--pakistani-green);
-    box-shadow: 0 8px 30px rgba(22, 142, 71, 0.15);
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-4px);
 }
 
+.memorial-card-image-container {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+}
+
+.memorial-card-image,
 .memorial-image {
-    border-radius: 8px 8px 0 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
 }
 
+.memorial-card:hover .memorial-card-image,
+.memorial-card:hover .memorial-image {
+    transform: scale(1.05);
+}
+
+.memorial-card-placeholder,
 .memorial-placeholder {
-    background: linear-gradient(45deg, var(--soft-gray), var(--warm-beige));
-    border-radius: 8px 8px 0 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--color-gray-100), var(--color-gray-200));
+    color: var(--color-gray-400);
+}
+
+.memorial-card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.memorial-card:hover .memorial-card-overlay {
+    opacity: 1;
+}
+
+.memorial-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+}
+
+.memorial-card-body {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.memorial-card-title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.memorial-card-title a {
+    color: var(--color-gray-800);
+    transition: color var(--transition-fast);
+}
+
+.memorial-card-title a:hover {
+    color: var(--color-primary) !important;
+}
+
+.memorial-card-dates {
+    font-size: var(--font-size-sm);
+    color: var(--color-gray-600);
+    margin-bottom: 0.75rem;
+}
+
+.memorial-card-bio {
+    font-size: var(--font-size-sm);
+    color: var(--color-gray-600);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    flex: 1;
+}
+
+.memorial-card-stats {
+    display: flex;
+    gap: 1.5rem;
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--color-gray-100);
+    border-bottom: 1px solid var(--color-gray-100);
+    margin-bottom: 1rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-gray-700);
+}
+
+.memorial-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.memorial-owner {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.owner-avatar {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: var(--font-size-xs);
+}
+
+.owner-name {
+    font-size: var(--font-size-sm);
+    color: var(--color-gray-600);
 }
 
 /* Form Styling */
+.form-control,
+.form-select {
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-gray-300);
+    padding: 0.625rem 1rem;
+    transition: all var(--transition-fast);
+}
+
 .form-control:focus,
 .form-select:focus {
-    border-color: var(--pakistani-green);
-    box-shadow: 0 0 0 0.2rem rgba(22, 142, 71, 0.25);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 0.2rem rgba(14, 104, 89, 0.15);
 }
 
 .form-label {
-    color: black;
+    color: var(--color-gray-800);
     font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.form-text {
+    color: var(--color-gray-600);
+    font-size: var(--font-size-sm);
+}
+
+/* Search Input */
+.search-input-wrapper {
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-gray-500);
+}
+
+.search-input-wrapper .form-control {
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
+.btn-clear {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--color-gray-500);
+    cursor: pointer;
+    padding: 0.25rem;
+    transition: color var(--transition-fast);
+}
+
+.btn-clear:hover {
+    color: var(--color-gray-700);
 }
 
 /* Badges */
+.badge {
+    border-radius: var(--radius-md);
+}
+
 .badge.bg-success {
-    background-color: var(--green-primary) !important;
+    background-color: var(--color-success) !important;
 }
 
 .badge.bg-primary {
-    background-color: var(--green-secondary) !important;
+    background-color: var(--color-primary) !important;
+}
+
+.badge.bg-info {
+    background-color: var(--color-info) !important;
+}
+
+.badge.bg-warning {
+    background-color: var(--color-warning) !important;
 }
 
 /* Alerts */
+.alert {
+    border-radius: var(--radius-lg);
+    border: none;
+}
+
 .alert-success {
-    background-color: rgba(22, 142, 71, 0.1);
-    border-color: var(--pakistani-green);
-    color: var(--pakistan-flag-green);
+    background-color: rgba(40, 167, 69, 0.1);
+    border-left: 4px solid var(--color-success);
+    color: var(--color-success);
 }
 
 .alert-info {
     background-color: rgba(214, 191, 8, 0.1);
-    border-color: var(--golden-yellow);
-    color: var(--earth-brown);
+    border-left: 4px solid var(--color-accent);
+    color: var(--color-accent-dark);
+}
+
+.alert-danger {
+    background-color: rgba(220, 53, 69, 0.1);
+    border-left: 4px solid var(--color-danger);
+    color: var(--color-danger);
+}
+
+.alert-warning {
+    background-color: rgba(255, 193, 7, 0.1);
+    border-left: 4px solid var(--color-warning);
+    color: #856404;
+}
+
+/* Toast Notifications */
+.toast-container {
+    z-index: var(--z-tooltip);
+}
+
+.toast {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+}
+
+.toast-body {
+    padding: 1rem;
 }
 
 /* Carousel Customization */
 .carousel-indicators button {
-    background-color: var(--pakistani-green);
+    background-color: var(--color-primary);
+    width: 12px;
+    height: 12px;
+    border-radius: var(--radius-full);
 }
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-    filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(91%) contrast(101%);
+    filter: invert(1);
+    background-size: 60%;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 5%;
+    opacity: 0.8;
+    transition: opacity var(--transition-fast);
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    opacity: 1;
 }
 
 /* Footer */
 footer.bg-dark {
-    background-color: var(--pakistan-flag-green) !important;
+    background-color: var(--color-gray-800) !important;
+}
+
+footer a {
+    color: var(--color-gray-400);
+    transition: color var(--transition-fast);
+}
+
+footer a:hover {
+    color: var(--color-primary-light);
 }
 
 /* Memory Items */
 .memory-item {
-    background-color: var(--pure-white);
-    border-radius: 8px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border-left: 4px solid var(--pakistani-green);
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+    border-left: 4px solid var(--color-primary);
+    transition: all var(--transition-fast);
 }
 
+.memory-item:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateX(4px);
+}
+
+.memory-avatar,
 .avatar-circle {
     width: 40px;
     height: 40px;
-    background-color: var(--pakistani-green);
-    color: var(--pure-white);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+    color: var(--color-white);
     font-weight: bold;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-sm);
 }
 
 /* Stats and Contributions */
 .contribution-stats .badge {
     padding: 0.5rem 0.75rem;
-    font-size: 0.85rem;
+    font-size: var(--font-size-sm);
 }
 
 .stat-number {
-    font-size: 2rem;
+    font-size: var(--font-size-3xl);
     font-weight: bold;
-    color: var(--pakistani-green);
+    color: var(--color-primary);
 }
 
 .stat-label {
-    font-size: 0.9rem;
-    color: var(--medium-gray);
+    font-size: var(--font-size-sm);
+    color: var(--color-gray-600);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+}
+
+.stat-box {
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    transition: background-color var(--transition-fast);
+}
+
+.stat-box:hover {
+    background-color: var(--color-gray-50);
 }
 
 /* Cultural Decorative Elements */
@@ -265,17 +809,198 @@ footer.bg-dark {
     transform: translateX(-50%);
     width: 60px;
     height: 2px;
-    background: linear-gradient(90deg, transparent, var(--golden-yellow), transparent);
+    background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+}
+
+/* Loading Skeleton */
+.skeleton-image,
+.skeleton-line,
+.skeleton-stat {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s ease-in-out infinite;
+    border-radius: var(--radius-md);
+}
+
+.skeleton-image {
+    height: 220px;
+}
+
+.skeleton-line {
+    height: 16px;
+    margin-bottom: 0.75rem;
+}
+
+.skeleton-title {
+    width: 70%;
+    height: 24px;
+}
+
+.skeleton-date {
+    width: 50%;
+    height: 14px;
+}
+
+.skeleton-bio {
+    width: 100%;
+}
+
+.skeleton-stats {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.skeleton-stat {
+    flex: 1;
+    height: 40px;
+}
+
+/* Animations */
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Animation Classes */
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-out;
+}
+
+.animate-slide-up {
+    animation: slideUp 0.8s ease-out;
+}
+
+.animate-slide-up-delay {
+    animation: slideUp 0.8s ease-out 0.2s both;
+}
+
+.animate-slide-up-delay-2 {
+    animation: slideUp 0.8s ease-out 0.4s both;
+}
+
+.animate-fade-in-delay {
+    animation: fadeIn 1s ease-out 0.6s both;
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Hero Shapes */
+.hero-shape-1, .hero-shape-2 {
+    position: absolute;
+    border-radius: var(--radius-full);
+    opacity: 0.05;
+    z-index: -1;
+}
+
+.hero-shape-1 {
+    width: 400px;
+    height: 400px;
+    background: var(--color-primary);
+    top: -100px;
+    right: -100px;
+}
+
+.hero-shape-2 {
+    width: 300px;
+    height: 300px;
+    background: var(--color-accent);
+    bottom: -50px;
+    left: -50px;
+}
+
+/* Empty State */
+.empty-state {
+    padding: 3rem 1rem;
+    text-align: center;
+}
+
+.empty-state i {
+    opacity: 0.5;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .hero-section {
-        padding: 3rem 0;
+        padding: 3rem 0 2rem;
     }
     
-    .display-4 {
-        font-size: 2.5rem;
+    .display-3, .display-4 {
+        font-size: 2rem;
+    }
+    
+    .memorial-card-wrapper {
+        margin-bottom: 1.5rem;
     }
     
     .memorial-card .row {
@@ -285,6 +1010,42 @@ footer.bg-dark {
     .memorial-card .col-4,
     .memorial-card .col-8 {
         padding: 0.5rem;
+    }
+    
+    /* Fixed mobile nav */
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: var(--z-sticky);
+    }
+    
+    main {
+        padding-top: 70px;
+    }
+    
+    /* Stack stats vertically */
+    .memorial-card-stats {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    /* Mobile action bar */
+    .mobile-action-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 1rem;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        z-index: var(--z-sticky);
+    }
+    
+    /* Adjust nav link active indicator for mobile */
+    .nav-link.active::after {
+        bottom: -4px;
     }
 }
 
@@ -297,7 +1058,108 @@ footer.bg-dark {
     .carousel-inner .col-lg-8 {
         padding: 0 1rem;
     }
+    
+    .memorial-card-image-container {
+        height: 180px;
+    }
+    
+    .stat-number {
+        font-size: var(--font-size-2xl);
+    }
 }
+
+/* Touch-friendly buttons for mobile */
+@media (hover: none) {
+    .btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .nav-link {
+        padding: 0.75rem 1rem !important;
+    }
+}
+
+/* Large screens */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
+}
+
+/* Print styles */
+@media print {
+    .navbar,
+    .btn,
+    footer,
+    .mobile-action-bar {
+        display: none;
+    }
+    
+    .memorial-card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+}
+
+/* Utility Classes */
+.object-cover {
+    object-fit: cover;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.rounded-lg {
+    border-radius: var(--radius-lg);
+}
+
+.shadow-sm {
+    box-shadow: var(--shadow-sm);
+}
+
+.shadow-md {
+    box-shadow: var(--shadow-md);
+}
+
+.shadow-lg {
+    box-shadow: var(--shadow-lg);
+}
+
+.shadow-xl {
+    box-shadow: var(--shadow-xl);
+}
+
+.transition-all {
+    transition: all var(--transition-base);
+}
+
+/* Loading Spinner */
+.spinner {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: var(--radius-full);
+    animation: spin 0.75s linear infinite;
+}
+
+.spinner-lg {
+    width: 2rem;
+    height: 2rem;
+}
+
+/* Image placeholder with better gradient */
+.img-placeholder {
+    background: linear-gradient(135deg, var(--color-gray-100), var(--color-gray-200));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-gray-400);
+}
+
 
 /* Islamic/Pakistani Geometric Patterns (Subtle) */
 .pattern-overlay {

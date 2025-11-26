@@ -67,53 +67,44 @@
 
     <!-- Dashboard Stats -->
     <div class="row mb-4">
-        <div class="col-md-3 mb-3">
-            <div class="card bg-primary text-white border-0">
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card bg-primary text-white border-0 shadow-sm h-100">
                 <div class="card-body text-center">
-                    <i class="fas fa-heart fa-2x mb-2"></i>
-                    <h3 class="card-title">{{ memorials.count }}</h3>
-                    <p class="card-text">Memorial{{ memorials.count|pluralize }}</p>
+                    <i class="fas fa-heart fa-3x mb-3 opacity-75"></i>
+                    <h2 class="card-title mb-1">{{ memorials.count }}</h2>
+                    <p class="card-text mb-0">Memorial{{ memorials.count|pluralize }}</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 mb-3">
-            <div class="card bg-success text-white border-0">
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card bg-success text-white border-0 shadow-sm h-100">
                 <div class="card-body text-center">
-                    <i class="fas fa-comments fa-2x mb-2"></i>
-                    <h3 class="card-title">
+                    <i class="fas fa-comments fa-3x mb-3 opacity-75"></i>
+                    <h2 class="card-title mb-1">
                         {% widthratio memorials 1 0 as total_memories %}
-                        {% for memorial in memorials %}
-                            {% for memory in memorial.memories.all %}{% endfor %}
-                        {% endfor %}
                         {{ memorials|length }}
-                    </h3>
-                    <p class="card-text">Total Memories</p>
+                    </h2>
+                    <p class="card-text mb-0">Total Memories</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 mb-3">
-            <div class="card bg-info text-white border-0">
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card bg-info text-white border-0 shadow-sm h-100">
                 <div class="card-body text-center">
-                    <i class="fas fa-eye fa-2x mb-2"></i>
-                    <h3 class="card-title">
+                    <i class="fas fa-eye fa-3x mb-3 opacity-75"></i>
+                    <h2 class="card-title mb-1">
                         {% for memorial in memorials %}{% if memorial.visibility == 'public' %}{{ forloop.counter }}{% endif %}{% endfor %}
-                    </h3>
-                    <p class="card-text">Public Memorials</p>
+                    </h2>
+                    <p class="card-text mb-0">Public Memorials</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 mb-3">
-            <div class="card bg-warning text-white border-0">
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card bg-warning text-white border-0 shadow-sm h-100">
                 <div class="card-body text-center">
-                    <i class="fas fa-tree fa-2x mb-2"></i>
-                    <h3 class="card-title">
-                        {% widthratio memorials 1 0 as total_contributions %}
-                        {% for memorial in memorials %}
-                            {% widthratio memorial.donations_count 1 memorial.trees_planted_count as memorial_total %}
-                        {% endfor %}
-                        0
-                    </h3>
-                    <p class="card-text">Contributions</p>
+                    <i class="fas fa-tree fa-3x mb-3 opacity-75"></i>
+                    <h2 class="card-title mb-1">0</h2>
+                    <p class="card-text mb-0">Contributions</p>
                 </div>
             </div>
         </div>
@@ -205,16 +196,16 @@
                     {% else %}
                     <div class="text-center py-5">
                         <div class="empty-state">
-                            <i class="fas fa-heart fa-4x text-muted mb-3"></i>
+                            <i class="fas fa-heart fa-4x text-muted mb-3 d-block"></i>
                             <h4 class="text-muted">No memorials yet</h4>
                             {% if user_profile.verified %}
                             <p class="text-muted mb-4">Create your first memorial to honor someone special in your life.</p>
-                            <a href="{% url 'create_memorial' %}" class="btn btn-primary">
+                            <a href="{% url 'create_memorial' %}" class="btn btn-primary btn-lg">
                                 <i class="fas fa-plus me-2"></i>Create Your First Memorial
                             </a>
                             {% else %}
                             <p class="text-muted mb-4">Please verify your email address to start creating memorials.</p>
-                            <a href="{% url 'verify_email' %}" class="btn btn-warning">
+                            <a href="{% url 'verify_email' %}" class="btn btn-warning btn-lg">
                                 <i class="fas fa-envelope me-2"></i>Verify Email Address
                             </a>
                             {% endif %}
@@ -231,25 +222,28 @@
         <div class="col-12">
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title text-primary mb-3">
+                    <h5 class="card-title text-primary mb-4">
                         <i class="fas fa-bolt me-2"></i>Quick Actions
                     </h5>
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <a href="{% url 'explore' %}" class="btn btn-outline-primary w-100">
-                                <i class="fas fa-search me-2"></i>Explore Memorials
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <a href="{% url 'explore' %}" class="btn btn-outline-primary w-100 py-3">
+                                <i class="fas fa-search fa-lg me-2"></i>
+                                <div>Explore Memorials</div>
                             </a>
                         </div>
                         {% if user_profile.verified %}
-                        <div class="col-md-4 mb-3">
-                            <a href="{% url 'create_memorial' %}" class="btn btn-outline-success w-100">
-                                <i class="fas fa-plus me-2"></i>Create Memorial
+                        <div class="col-md-4">
+                            <a href="{% url 'create_memorial' %}" class="btn btn-outline-success w-100 py-3">
+                                <i class="fas fa-plus fa-lg me-2"></i>
+                                <div>Create Memorial</div>
                             </a>
                         </div>
                         {% endif %}
-                        <div class="col-md-4 mb-3">
-                            <a href="{% url 'home' %}" class="btn btn-outline-info w-100">
-                                <i class="fas fa-home me-2"></i>Back to Home
+                        <div class="col-md-4">
+                            <a href="{% url 'home' %}" class="btn btn-outline-info w-100 py-3">
+                                <i class="fas fa-home fa-lg me-2"></i>
+                                <div>Back to Home</div>
                             </a>
                         </div>
                     </div>
@@ -258,40 +252,4 @@
         </div>
     </div>
 </div>
-
-<style>
-.memorial-card {
-    transition: transform 0.2s ease-in-out;
-}
-
-.memorial-card:hover {
-    transform: translateY(-3px);
-}
-
-.object-cover {
-    object-fit: cover;
-}
-
-.memorial-placeholder {
-    min-height: 120px;
-}
-
-.empty-state {
-    padding: 2rem;
-}
-
-.card.bg-primary,
-.card.bg-success,
-.card.bg-info,
-.card.bg-warning {
-    transition: transform 0.2s ease-in-out;
-}
-
-.card.bg-primary:hover,
-.card.bg-success:hover,
-.card.bg-info:hover,
-.card.bg-warning:hover {
-    transform: translateY(-2px);
-}
-</style>
 {% endblock %}

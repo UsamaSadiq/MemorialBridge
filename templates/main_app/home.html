@@ -5,27 +5,71 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="hero-section bg-gradient-primary text-primary py-5">
-    <div class="container">
-        <div class="row align-items-center min-vh-50">
+<section class="hero-section position-relative overflow-hidden">
+    <!-- Decorative Background Shapes -->
+    <div class="hero-shape-1"></div>
+    <div class="hero-shape-2"></div>
+    
+    <div class="container py-5">
+        <div class="row align-items-center min-vh-75">
             <div class="col-lg-6">
-                <h1 class="display-4 fw-bold mb-4 text-primary">Honoring Lives, Preserving Memories</h1>
-                <p class="lead mb-4 text-tertiary">
+                <span class="badge badge-soft-primary mb-3 animate-fade-in">
+                    <i class="fas fa-heart me-1"></i>Preserving Legacies Since 2024
+                </span>
+                
+                <h1 class="display-3 fw-bold mb-4 animate-slide-up">
+                    Honoring Lives,<br>
+                    <span class="text-gradient">Preserving Memories</span>
+                </h1>
+                
+                <p class="lead mb-4 text-secondary animate-slide-up-delay" style="line-height: 1.8;">
                     Create lasting tributes for those who have touched our hearts. 
                     Share memories, celebrate lives, and keep their legacy alive forever.
                 </p>
-                <div class="d-flex gap-3">
-                    <a href="{% url 'explore' %}" class="btn btn-accent btn-lg">Explore Memorials</a>
+                
+                <div class="d-flex flex-wrap gap-3 mb-4 animate-slide-up-delay-2">
+                    <a href="{% url 'explore' %}" class="btn btn-primary btn-lg shadow-lg">
+                        <i class="fas fa-compass me-2"></i>Explore Memorials
+                    </a>
                     {% if user.is_authenticated %}
-                        <a href="{% url 'create_memorial' %}" class="btn btn-outline-light btn-lg">Create Memorial</a>
+                        <a href="{% url 'create_memorial' %}" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-plus me-2"></i>Create Memorial
+                        </a>
                     {% else %}
-                        <a href="{% url 'signup' %}" class="btn btn-outline-light btn-lg">Get Started</a>
+                        <a href="{% url 'signup' %}" class="btn btn-outline-primary btn-lg">
+                            Get Started Free
+                        </a>
                     {% endif %}
                 </div>
+                
+                <!-- Trust Indicators -->
+                <div class="trust-indicators animate-fade-in-delay">
+                    <div class="row text-center text-md-start g-3">
+                        <div class="col-4">
+                            <div class="trust-stat">
+                                <div class="fw-bold text-primary" style="font-size: 1.5rem;">1000+</div>
+                                <div class="small text-muted">Memorials</div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="trust-stat">
+                                <div class="fw-bold text-primary" style="font-size: 1.5rem;">5000+</div>
+                                <div class="small text-muted">Memories Shared</div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="trust-stat">
+                                <div class="fw-bold text-primary" style="font-size: 1.5rem;">100%</div>
+                                <div class="small text-muted">Free Forever</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-6 text-center">
-                <div class="hero-image">
-                    <img src="{% static 'img/logo.jpeg' %}" alt="Logo" style="width: 500px;">
+            
+            <div class="col-lg-6 text-center d-none d-lg-block">
+                <div class="hero-image animate-float">
+                    <img src="{% static 'img/logo.jpeg' %}" alt="MemorialBridge" class="img-fluid rounded-lg shadow-xl" style="max-width: 500px;">
                 </div>
             </div>
         </div>

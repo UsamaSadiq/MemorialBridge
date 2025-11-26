@@ -16,61 +16,86 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+    <!-- Skip to Content Link for Accessibility -->
+    <a href="#main-content" class="skip-to-content">Skip to content</a>
+    
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm" aria-label="Main navigation">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary" href="{% url 'home' %}">
-                <i class="fas fa-heart me-2"></i>MemorialBridge
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+                <i class="fas fa-heart text-primary me-2"></i>
+                <span class="fw-bold">MemorialBridge</span>
             </a>
             
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" 
+                    data-bs-target="#navbarNav" aria-label="Toggle navigation" aria-expanded="false">
                 <span class="navbar-toggler-icon"></span>
             </button>
             
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" 
+                           href="{% url 'home' %}">
+                            <i class="fas fa-home me-1"></i>Home
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'explore' %}">Explore</a>
+                        <a class="nav-link {% if 'explore' in request.path %}active{% endif %}" 
+                           href="{% url 'explore' %}">
+                            <i class="fas fa-compass me-1"></i>Explore
+                        </a>
                     </li>
-                    {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'create_memorial' %}">Create Memorial</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'dashboard' %}">My Dashboard</a>
-                    </li>
-                    {% endif %}
-                </ul>
-                
-                <ul class="navbar-nav">
+                    
                     {% if user.is_authenticated %}
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user me-1"></i>{{ user.username }}
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" 
+                           id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="user-avatar me-2">
+                                {{ user.username|first|upper }}
+                            </div>
+                            <span>{{ user.username }}</span>
                             {% if user.userprofile.verified %}
-                                <i class="fas fa-check-circle text-success ms-1" title="Verified"></i>
-                            {% else %}
-                                <i class="fas fa-exclamation-circle text-warning ms-1" title="Unverified"></i>
+                            <i class="fas fa-check-circle text-success ms-1" 
+                               data-bs-toggle="tooltip" title="Verified Account"></i>
                             {% endif %}
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a></li>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="{% url 'dashboard' %}">
+                                    <i class="fas fa-th-large me-2"></i>Dashboard
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'create_memorial' %}">
+                                    <i class="fas fa-plus me-2"></i>Create Memorial
+                                </a>
+                            </li>
                             {% if not user.userprofile.verified %}
-                            <li><a class="dropdown-item" href="{% url 'verify_email' %}">Verify Email</a></li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'verify_email' %}">
+                                    <i class="fas fa-envelope me-2"></i>Verify Email
+                                </a>
+                            </li>
                             {% endif %}
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        <a class="nav-link" href="{% url 'login' %}">
+                            <i class="fas fa-sign-in-alt me-1"></i>Login
+                        </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="btn btn-accent ms-2" href="{% url 'signup' %}">Sign Up</a>
+                    <li class="nav-item ms-2">
+                        <a class="btn btn-primary btn-sm" href="{% url 'signup' %}">
+                            Get Started
+                        </a>
                     </li>
                     {% endif %}
                 </ul>
@@ -78,20 +103,25 @@
         </div>
     </nav>
 
-    <!-- Messages -->
+    <!-- Toast Notifications -->
     {% if messages %}
-    <div class="container mt-3">
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999">
         {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <div class="toast align-items-center text-white bg-{{ message.tags }} border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' or message.tags == 'danger' %}exclamation-circle{% else %}info-circle{% endif %} me-2"></i>
+                    {{ message }}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
         </div>
         {% endfor %}
     </div>
     {% endif %}
 
     <!-- Main Content -->
-    <main>
+    <main id="main-content">
         {% block content %}{% endblock %}
     </main>
 
@@ -119,6 +149,28 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Custom JS -->
     <script src="{% static 'js/main.js' %}"></script>
+    
+    <!-- Auto-hide toast notifications -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize tooltips
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+            
+            // Auto-hide toasts after 5 seconds
+            const toasts = document.querySelectorAll('.toast');
+            toasts.forEach(toast => {
+                setTimeout(() => {
+                    const bsToast = bootstrap.Toast.getInstance(toast);
+                    if (bsToast) {
+                        bsToast.hide();
+                    }
+                }, 5000);
+            });
+        });
+    </script>
     
     {% block extra_js %}{% endblock %}
 </body>
