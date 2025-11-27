@@ -16,8 +16,13 @@
                 </div>
                 
                 <div class="card-body p-4">
-                    <form method="post">
+                    <form method="post" action="{% url 'login' %}">
                         {% csrf_token %}
+                        
+                        <!-- Debug CSRF Token -->
+                        <script>
+                            console.log('CSRF Token in form:', document.querySelector('input[name="csrfmiddlewaretoken"]')?.value);
+                        </script>
                         
                         <div class="mb-3">
                             <label for="id_username" class="form-label fw-bold">

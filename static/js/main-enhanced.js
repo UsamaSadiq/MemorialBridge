@@ -144,51 +144,37 @@
     }
 
     /**
-     * Initialize real-time form validation
+     * Initialize real-time form validation using Bootstrap's built-in validation
      */
     function initializeRealTimeFormValidation() {
         try {
-            const forms = document.querySelectorAll('form:not(.no-validation)');
+            const forms = document.querySelectorAll('form');
             
             forms.forEach(form => {
-                const inputs = form.querySelectorAll('input:not([type="hidden"]):not([type="submit"]), textarea, select');
+                // Add Bootstrap validation classes
+                form.classList.add('needs-validation');
                 
+                // Real-time validation on blur
+                const inputs = form.querySelectorAll('input, textarea, select');
                 inputs.forEach(input => {
-                    // Validate on blur
                     input.addEventListener('blur', function() {
                         validateField(this);
                     });
                     
-                    // Validate on input if already has validation state
-                    input.addEventListener('input', debounce(function() {
+                    input.addEventListener('input', function() {
                         if (this.classList.contains('is-invalid') || this.classList.contains('is-valid')) {
                             validateField(this);
                         }
-                    }, CONFIG.DEBOUNCE_DELAY));
+                    });
                 });
                 
-                // Prevent invalid form submission
+                // Validate on submit
                 form.addEventListener('submit', function(e) {
-                    let isValid = true;
-                    
-                    inputs.forEach(input => {
-                        if (!validateField(input)) {
-                            isValid = false;
-                        }
-                    });
-                    
-                    if (!isValid) {
+                    if (!this.checkValidity()) {
                         e.preventDefault();
                         e.stopPropagation();
-                        
-                        // Focus first invalid field
-                        const firstInvalid = form.querySelector('.is-invalid');
-                        if (firstInvalid) {
-                            firstInvalid.focus();
-                        }
                     }
-                    
-                    form.classList.add('was-validated');
+                    this.classList.add('was-validated');
                 });
             });
         } catch (error) {
@@ -197,114 +183,47 @@
     }
 
     /**
-     * Validate individual field
+     * Validate individual field using HTML5 validation
      */
     function validateField(field) {
-        const value = field.value.trim();
-        const type = field.type;
-        const required = field.required;
-        
-        // Clear previous validation
-        field.classList.remove('is-invalid', 'is-valid');
-        
-        // Check if required field is empty
-        if (required && !value) {
-            setFieldInvalid(field, 'This field is required');
+        if (!field.checkValidity()) {
+            setFieldInvalid(field, field.validationMessage);
             return false;
-        }
-        
-        // Skip validation if field is empty and not required
-        if (!value && !required) {
+        } else {
+            setFieldValid(field);
             return true;
         }
-        
-        // Type-specific validation
-        switch(type) {
-            case 'email':
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(value)) {
-                    setFieldInvalid(field, 'Please enter a valid email address');
-                    return false;
-                }
-                break;
-                
-            case 'password':
-                if (value.length < 8) {
-                    setFieldInvalid(field, 'Password must be at least 8 characters');
-                    return false;
-                }
-                // Check for password confirmation
-                const confirmField = document.querySelector(`input[name="${field.name}2"]`);
-                if (confirmField && confirmField.value && value !== confirmField.value) {
-                    setFieldInvalid(field, 'Passwords do not match');
-                    return false;
-                }
-                break;
-                
-            case 'url':
-                try {
-                    new URL(value);
-                } catch {
-                    setFieldInvalid(field, 'Please enter a valid URL');
-                    return false;
-                }
-                break;
-                
-            case 'number':
-                if (isNaN(value)) {
-                    setFieldInvalid(field, 'Please enter a valid number');
-                    return false;
-                }
-                break;
-        }
-        
-        // Min/max length validation
-        if (field.minLength && value.length < field.minLength) {
-            setFieldInvalid(field, `Minimum ${field.minLength} characters required`);
-            return false;
-        }
-        
-        if (field.maxLength && value.length > field.maxLength) {
-            setFieldInvalid(field, `Maximum ${field.maxLength} characters allowed`);
-            return false;
-        }
-        
-        // If we get here, field is valid
-        setFieldValid(field);
-        return true;
     }
 
     /**
-     * Set field as invalid
+     * Set field as invalid with error message
      */
     function setFieldInvalid(field, message) {
-        field.classList.add('is-invalid');
         field.classList.remove('is-valid');
+        field.classList.add('is-invalid');
         
+        // Add or update invalid feedback
         let feedback = field.parentElement.querySelector('.invalid-feedback');
         if (!feedback) {
             feedback = document.createElement('div');
             feedback.className = 'invalid-feedback';
             field.parentElement.appendChild(feedback);
         }
-        feedback.textContent = message;
-        field.setAttribute('aria-invalid', 'true');
-        field.setAttribute('aria-describedby', feedback.id || 'error-' + field.name);
+        feedback.textContent = message || 'Please provide a valid value.';
     }
 
     /**
      * Set field as valid
      */
     function setFieldValid(field) {
-        field.classList.add('is-valid');
         field.classList.remove('is-invalid');
+        field.classList.add('is-valid');
         
+        // Remove invalid feedback if exists
         const feedback = field.parentElement.querySelector('.invalid-feedback');
-        if (feedback) {
-            feedback.remove();
+        if (feedback && !feedback.classList.contains('d-none')) {
+            feedback.style.display = 'none';
         }
-        field.removeAttribute('aria-invalid');
-        field.removeAttribute('aria-describedby');
     }
 
     /**
@@ -667,24 +586,31 @@
 
     /**
      * Set form loading state
+     * Note: We only disable the submit button and add visual loading states.
+     * We do NOT disable form inputs because disabled inputs are excluded from form submission.
      */
     function setFormLoading(form, loading = true) {
         const submitButton = form.querySelector('button[type="submit"]');
-        const inputs = form.querySelectorAll('input, textarea, select, button');
         
         if (loading) {
             if (submitButton) {
                 submitButton.disabled = true;
                 submitButton.classList.add('loading');
+                // Add loading spinner to button if not already present
+                const originalContent = submitButton.innerHTML;
+                submitButton.dataset.originalContent = originalContent;
+                submitButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Loading...';
             }
-            inputs.forEach(input => input.disabled = true);
             form.classList.add('loading');
         } else {
             if (submitButton) {
                 submitButton.disabled = false;
                 submitButton.classList.remove('loading');
+                // Restore original button content
+                if (submitButton.dataset.originalContent) {
+                    submitButton.innerHTML = submitButton.dataset.originalContent;
+                }
             }
-            inputs.forEach(input => input.disabled = false);
             form.classList.remove('loading');
         }
     }
