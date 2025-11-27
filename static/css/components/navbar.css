@@ -1,0 +1,119 @@
+/* MemorialBridge - Navigation Components */
+
+.navbar {
+    transition: all var(--transition-base);
+    box-shadow: var(--shadow-sm);
+    background: linear-gradient(180deg, rgba(14, 104, 89, 0.12), rgba(14, 104, 89, 0.18));
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    color: var(--color-primary) !important;
+    font-weight: 700;
+    transition: transform var(--transition-fast);
+}
+
+.navbar-brand:hover {
+    transform: scale(1.05);
+}
+
+.nav-link {
+    color: var(--color-gray-700) !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    position: relative;
+    transition: color var(--transition-fast);
+}
+
+.nav-link:hover {
+    color: var(--color-primary) !important;
+}
+
+.nav-link.active {
+    color: var(--color-primary) !important;
+    font-weight: 600;
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 2px;
+    background-color: var(--color-primary);
+    border-radius: var(--radius-full);
+}
+
+/* User Avatar in Navigation */
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+    border-radius: var(--radius-full);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+}
+
+.dropdown-menu {
+    border: none;
+    box-shadow: var(--shadow-lg);
+    min-width: 200px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.dropdown-item {
+    padding: 0.75rem 1.25rem;
+    transition: all var(--transition-fast);
+}
+
+.dropdown-item:hover {
+    background-color: var(--color-gray-50);
+    padding-left: 1.5rem;
+    color: var(--color-primary);
+}
+
+.dropdown-divider {
+    margin: 0.5rem 0;
+}
+
+/* Mobile Navigation */
+@media (max-width: 768px) {
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: var(--z-sticky);
+    }
+    
+    body {
+        padding-top: 70px;
+    }
+    
+    .nav-link.active::after {
+        bottom: -4px;
+    }
+}
+
+/* Touch-friendly nav items */
+@media (hover: none) and (pointer: coarse) {
+    .nav-link {
+        padding: 0.75rem 1rem !important;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .dropdown-item {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+}

@@ -153,6 +153,57 @@ def user_dashboard(request):
     return render(request, 'main_app/dashboard.html', context)
 
 
+@login_required
+def edit_memorial(request, slug):
+    """
+    Edit an existing memorial
+    """
+    memorial = get_object_or_404(Memorial, slug=slug)
+    
+    # Check if user owns this memorial
+    if memorial.owner.user != request.user:
+        messages.error(request, "You don't have permission to edit this memorial.")
+        return redirect('memorial_detail', slug=slug)
+    
+    if request.method == 'POST':
+        form = MemorialForm(request.POST, request.FILES, instance=memorial)
+        if form.is_valid():
+            memorial = form.save()
+            messages.success(request, f"Memorial for {memorial.name} updated successfully!")
+            return redirect('memorial_detail', slug=memorial.slug)
+    else:
+        form = MemorialForm(instance=memorial)
+    
+    context = {
+        'form': form,
+        'memorial': memorial,
+        'is_edit': True
+    }
+    return render(request, 'main_app/create_memorial.html', context)
+
+
+@login_required
+def delete_memorial(request, slug):
+    """
+    Delete a memorial
+    """
+    memorial = get_object_or_404(Memorial, slug=slug)
+    
+    # Check if user owns this memorial
+    if memorial.owner.user != request.user:
+        messages.error(request, "You don't have permission to delete this memorial.")
+        return redirect('memorial_detail', slug=slug)
+    
+    if request.method == 'POST':
+        memorial_name = memorial.name
+        memorial.delete()
+        messages.success(request, f"Memorial for {memorial_name} has been deleted.")
+        return redirect('dashboard')
+    
+    context = {'memorial': memorial}
+    return render(request, 'main_app/delete_memorial.html', context)
+
+
 def signup(request):
     """
     User registration

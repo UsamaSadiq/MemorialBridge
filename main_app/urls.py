@@ -11,6 +11,8 @@ urlpatterns = [
     # Memorial pages
     path('memorial/new/', views.create_memorial, name='create_memorial'),
     path('m/<slug:slug>/', views.memorial_detail, name='memorial_detail'),
+    path('m/<slug:slug>/edit/', views.edit_memorial, name='edit_memorial'),
+    path('m/<slug:slug>/delete/', views.delete_memorial, name='delete_memorial'),
     
     # Authentication
     path('signup/', views.signup, name='signup'),

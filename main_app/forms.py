@@ -24,13 +24,40 @@ class MemorialForm(forms.ModelForm):
         model = Memorial
         fields = ['name', 'dob', 'dod', 'bio', 'cover_image', 'visibility']
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Full name'}),
-            'dob': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'dod': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 5, 'placeholder': 'Share their story...'}),
-            'cover_image': forms.FileInput(attrs={'class': 'form-control'}),
-            'visibility': forms.Select(attrs={'class': 'form-select'}),
+            'name': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Full name',
+                'maxlength': '200'
+            }),
+            'dob': forms.DateInput(attrs={
+                'class': 'form-control', 
+                'type': 'date'
+            }),
+            'dod': forms.DateInput(attrs={
+                'class': 'form-control', 
+                'type': 'date'
+            }),
+            'bio': forms.Textarea(attrs={
+                'class': 'form-control', 
+                'rows': 5, 
+                'placeholder': 'Share their story...'
+            }),
+            'cover_image': forms.FileInput(attrs={
+                'class': 'form-control'
+            }),
+            'visibility': forms.Select(attrs={
+                'class': 'form-select'
+            }),
         }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Remove any maxlength attribute from bio field
+        if 'bio' in self.fields:
+            self.fields['bio'].widget.attrs.pop('maxlength', None)
+            # Also check if there's a max_length on the field itself
+            if hasattr(self.fields['bio'], 'max_length'):
+                self.fields['bio'].max_length = None
 
 
 class MemoryForm(forms.ModelForm):

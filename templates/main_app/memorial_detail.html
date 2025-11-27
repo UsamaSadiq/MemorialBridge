@@ -3,70 +3,190 @@
 
 {% block title %}{{ memorial.name }} - MemorialBridge{% endblock %}
 
+{% block meta_description %}Memorial page for {{ memorial.name }}{% if memorial.dob and memorial.dod %}, {{ memorial.dob|date:"Y" }}-{{ memorial.dod|date:"Y" }}{% endif %}. {{ memorial.bio|truncatewords:30 }}{% endblock %}
+
+{% block og_title %}{{ memorial.name }} - MemorialBridge{% endblock %}
+{% block og_description %}{{ memorial.bio|truncatewords:30 }}{% endblock %}
+{% block og_image %}{% if memorial.cover_image %}{{ memorial.cover_image.url }}{% else %}{% static 'img/cover.png' %}{% endif %}{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "{{ memorial.name }}",
+    {% if memorial.dob %}"birthDate": "{{ memorial.dob|date:'Y-m-d' }}",{% endif %}
+    {% if memorial.dod %}"deathDate": "{{ memorial.dod|date:'Y-m-d' }}",{% endif %}
+    "description": "{{ memorial.bio|striptags }}",
+    {% if memorial.cover_image %}"image": "{{ memorial.cover_image.url }}"{% endif %}
+}
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .memorial-detail-wrapper {
+        background: linear-gradient(180deg, rgba(14, 104, 89, 0.05), rgba(255, 255, 255, 1) 30%, rgba(14, 104, 89, 0.03));
+        min-height: 100vh;
+    }
+    
+    .memorial-header-card {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(14, 104, 89, 0.02));
+        border: 1px solid rgba(14, 104, 89, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .memorial-profile-img,
+    .memorial-profile-placeholder {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border: 4px solid rgba(14, 104, 89, 0.1);
+    }
+    
+    .stat-box {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(14, 104, 89, 0.03));
+        border: 1px solid rgba(14, 104, 89, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .stat-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(14, 104, 89, 0.12) !important;
+        border-color: var(--color-primary);
+    }
+    
+    .section-card {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(14, 104, 89, 0.01));
+        border: 1px solid rgba(14, 104, 89, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .section-card:hover {
+        box-shadow: 0 10px 30px rgba(14, 104, 89, 0.1) !important;
+    }
+    
+    .add-memory-section {
+        background: linear-gradient(135deg, rgba(14, 104, 89, 0.05), rgba(14, 104, 89, 0.02));
+        border: 1px solid rgba(14, 104, 89, 0.1);
+    }
+    
+    .memory-item {
+        transition: all 0.2s ease;
+        padding: 1.25rem;
+        border-radius: var(--radius-md);
+        margin-bottom: 1rem;
+        background: rgba(255, 255, 255, 0.5);
+    }
+    
+    .memory-item:hover {
+        background: rgba(14, 104, 89, 0.02);
+        box-shadow: 0 2px 8px rgba(14, 104, 89, 0.08);
+    }
+    
+    .memory-item:last-child {
+        border-bottom: none !important;
+        margin-bottom: 0 !important;
+    }
+    
+    .avatar-circle {
+        width: 48px;
+        height: 48px;
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+    
+    .sidebar-card {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(14, 104, 89, 0.02));
+        border: 1px solid rgba(14, 104, 89, 0.1);
+    }
+    
+    @media (min-width: 992px) {
+        .sidebar-sticky {
+            position: sticky;
+            top: 80px;
+            z-index: 10;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container py-4">
-    <!-- Memorial Header -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="memorial-header bg-white rounded-lg shadow-sm p-4">
-                <div class="row align-items-center">
-                    <div class="col-md-3 text-center text-md-start mb-3 mb-md-0">
-                        {% if memorial.cover_image %}
-                        <img src="{{ memorial.cover_image.url }}" 
-                             class="memorial-profile-img rounded-circle shadow" 
-                             alt="{{ memorial.name }}"
-                             style="width: 150px; height: 150px; object-fit: cover;">
-                        {% else %}
-                        <div class="memorial-profile-placeholder rounded-circle shadow d-inline-flex align-items-center justify-content-center bg-light"
-                             style="width: 150px; height: 150px;">
-                            <i class="fas fa-user fa-4x text-muted"></i>
-                        </div>
-                        {% endif %}
-                    </div>
-                    <div class="col-md-9">
-                        <h1 class="memorial-name fw-bold mb-2" style="color: var(--color-primary-dark);">{{ memorial.name }}</h1>
-                        {% if memorial.dob and memorial.dod %}
-                        <p class="memorial-dates text-muted h5 mb-3">
-                            <i class="fas fa-calendar-alt me-2"></i>
-                            {{ memorial.dob|date:"F j, Y" }} - {{ memorial.dod|date:"F j, Y" }}
-                        </p>
-                        {% endif %}
-                        
-                        <div class="memorial-actions d-flex flex-wrap gap-2 mb-3">
-                            <button class="btn btn-primary copy-link-btn shadow-sm" data-slug="{{ memorial.slug }}">
-                                <i class="fas fa-share me-2"></i>Share Memorial
-                            </button>
-                            {% if can_edit %}
-                            <a href="#" class="btn btn-outline-secondary">
-                                <i class="fas fa-edit me-2"></i>Edit Memorial
-                            </a>
+<div class="memorial-detail-wrapper">
+    <div class="container py-5">
+        <!-- Memorial Header -->
+        <article class="row mb-4" role="article" aria-label="Memorial for {{ memorial.name }}">
+            <div class="col-12">
+                <div class="memorial-header-card rounded-lg shadow-sm p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-3 text-center text-md-start mb-3 mb-md-0">
+                            {% if memorial.cover_image %}
+                            <img src="{{ memorial.cover_image.url }}" 
+                                 class="memorial-profile-img rounded-circle shadow-md" 
+                                 alt="Portrait of {{ memorial.name }}{% if memorial.dob and memorial.dod %}, lived {{ memorial.dob|date:'Y' }}-{{ memorial.dod|date:'Y' }}{% endif %}"
+                                 width="150"
+                                 height="150"
+                                 loading="eager">
+                            {% else %}
+                            <div class="memorial-profile-placeholder rounded-circle shadow-md d-inline-flex align-items-center justify-content-center"
+                                 style="background: linear-gradient(135deg, rgba(14, 104, 89, 0.1), rgba(14, 104, 89, 0.05));"
+                                 role="img"
+                                 aria-label="No profile image available for {{ memorial.name }}">
+                                <i class="fas fa-user fa-4x text-primary opacity-50" aria-hidden="true"></i>
+                            </div>
                             {% endif %}
                         </div>
-                        
-                        <div class="memorial-stats">
-                            <div class="row g-3">
-                                <div class="col-6 col-md-3">
-                                    <div class="stat-box text-center p-3 rounded bg-light">
-                                        <div class="stat-number text-success fw-bold h4 mb-0">{{ memorial.donations_count }}</div>
-                                        <div class="stat-label text-muted small">Donations</div>
+                        <div class="col-md-9">
+                            <h1 class="memorial-name fw-bold mb-2 text-primary">{{ memorial.name }}</h1>
+                            {% if memorial.dob and memorial.dod %}
+                            <p class="memorial-dates text-muted h5 mb-3">
+                                <i class="fas fa-calendar-alt me-2" aria-hidden="true"></i>
+                                <time datetime="{{ memorial.dob|date:'Y-m-d' }}">{{ memorial.dob|date:"F j, Y" }}</time> - 
+                                <time datetime="{{ memorial.dod|date:'Y-m-d' }}">{{ memorial.dod|date:"F j, Y" }}</time>
+                            </p>
+                            {% endif %}
+                            
+                            <div class="memorial-actions d-flex flex-wrap gap-2 mb-3">
+                                <button class="btn btn-primary copy-link-btn shadow-sm" 
+                                        data-slug="{{ memorial.slug }}"
+                                        aria-label="Share memorial link for {{ memorial.name }}">
+                                    <i class="fas fa-share me-2" aria-hidden="true"></i>Share Memorial
+                                </button>
+                                {% if can_edit %}
+                                <a href="{% url 'edit_memorial' memorial.slug %}" class="btn btn-outline-primary" aria-label="Edit memorial for {{ memorial.name }}">
+                                    <i class="fas fa-edit me-2" aria-hidden="true"></i>Edit Memorial
+                                </a>
+                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" aria-label="Delete memorial for {{ memorial.name }}">
+                                    <i class="fas fa-trash me-2" aria-hidden="true"></i>Delete
+                                </button>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="memorial-stats" role="region" aria-label="Memorial statistics">
+                                <div class="row g-3">
+                                    <div class="col-6 col-md-3">
+                                        <div class="stat-box text-center p-3 rounded-lg shadow-sm">
+                                            <div class="stat-number text-success fw-bold h4 mb-0" aria-label="{{ memorial.donations_count }} donations">{{ memorial.donations_count }}</div>
+                                            <div class="stat-label text-muted small">Donations</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <div class="stat-box text-center p-3 rounded bg-light">
-                                        <div class="stat-number text-primary fw-bold h4 mb-0">{{ memorial.trees_planted_count }}</div>
-                                        <div class="stat-label text-muted small">Trees Planted</div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="stat-box text-center p-3 rounded-lg shadow-sm">
+                                            <div class="stat-number text-primary fw-bold h4 mb-0" aria-label="{{ memorial.trees_planted_count }} trees planted">{{ memorial.trees_planted_count }}</div>
+                                            <div class="stat-label text-muted small">Trees Planted</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <div class="stat-box text-center p-3 rounded bg-light">
-                                        <div class="stat-number text-info fw-bold h4 mb-0">{{ memories.count }}</div>
-                                        <div class="stat-label text-muted small">Memories</div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="stat-box text-center p-3 rounded-lg shadow-sm">
+                                            <div class="stat-number text-info fw-bold h4 mb-0" aria-label="{{ memories.count }} memories shared">{{ memories.count }}</div>
+                                            <div class="stat-label text-muted small">Memories</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <div class="stat-box text-center p-3 rounded bg-light">
-                                        <div class="stat-number text-warning fw-bold h4 mb-0">{{ memorial.total_contributions }}</div>
-                                        <div class="stat-label text-muted small">Total Impact</div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="stat-box text-center p-3 rounded-lg shadow-sm">
+                                            <div class="stat-number text-warning fw-bold h4 mb-0" aria-label="Total impact: {{ memorial.total_contributions }}">{{ memorial.total_contributions }}</div>
+                                            <div class="stat-label text-muted small">Total Impact</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -75,33 +195,33 @@
                 </div>
             </div>
         </div>
-    </div>
+    </article>
 
     <div class="row">
         <!-- Biography Section -->
         <div class="col-lg-8">
             {% if memorial.bio %}
-            <div class="card border-0 shadow-sm mb-4">
-                <div class="card-body">
-                    <h3 class="card-title mb-3" style="color: var(--color-primary);">
+            <div class="section-card rounded-lg shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h3 class="card-title mb-4 fw-bold text-primary">
                         <i class="fas fa-book me-2"></i>Biography
                     </h3>
-                    <p class="card-text lh-lg" style="font-size: 1.05rem;">{{ memorial.bio|linebreaks }}</p>
+                    <div class="card-text lh-lg" style="font-size: 1.05rem; color: var(--color-gray-700);">{{ memorial.bio|linebreaks }}</div>
                 </div>
             </div>
             {% endif %}
 
             <!-- Memories Section -->
-            <div class="card border-0 shadow-sm mb-4">
-                <div class="card-body">
-                    <h3 class="card-title mb-4" style="color: var(--color-primary);">
-                        <i class="fas fa-heart me-2"></i>Memories <span class="badge bg-primary">{{ memories.count }}</span>
+            <div class="section-card rounded-lg shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h3 class="card-title mb-4 fw-bold text-primary">
+                        <i class="fas fa-heart me-2"></i>Memories <span class="badge bg-primary text-white ms-2">{{ memories.count }}</span>
                     </h3>
                     
                     <!-- Add Memory Form -->
                     {% if user.is_authenticated %}
-                    <div class="add-memory-section mb-4 p-4 rounded" style="background-color: var(--color-gray-50);">
-                        <h5 class="mb-3"><i class="fas fa-pen me-2"></i>Share a Memory</h5>
+                    <div class="add-memory-section mb-4 p-4 rounded-lg">
+                        <h5 class="mb-3 fw-bold text-primary"><i class="fas fa-pen me-2"></i>Share a Memory</h5>
                         <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <input type="hidden" name="memory_submit" value="1">
@@ -127,65 +247,67 @@
                                 </div>
                             </div>
                             
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary shadow-sm">
                                 <i class="fas fa-plus me-2"></i>Add Memory
                             </button>
                         </form>
                     </div>
                     {% else %}
-                    <div class="alert alert-info mb-4">
+                    <div class="alert alert-info mb-4 border-0 shadow-sm">
                         <i class="fas fa-info-circle me-2"></i>
-                        <a href="{% url 'login' %}" class="alert-link">Log in</a> to share your memories of {{ memorial.name }}.
+                        <a href="{% url 'login' %}" class="alert-link fw-bold">Log in</a> to share your memories of {{ memorial.name }}.
                     </div>
                     {% endif %}
 
                     <!-- Memories List -->
                     <div class="memories-list">
                         {% for memory in memories %}
-                        <div class="memory-item border-bottom pb-3 mb-3">
+                        <div class="memory-item border-0">
                             <div class="d-flex align-items-start">
                                 <div class="memory-avatar me-3">
-                                    <div class="avatar-circle bg-primary text-white rounded-circle d-flex align-items-center justify-content-center">
+                                    <div class="avatar-circle bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm">
                                         {{ memory.author.username|first|upper }}
                                     </div>
                                 </div>
                                 <div class="memory-content flex-grow-1">
-                                    <div class="memory-header d-flex justify-content-between align-items-center mb-2">
+                                    <div class="memory-header d-flex justify-content-between align-items-start mb-2">
                                         <div>
-                                            <strong>{{ memory.author.username }}</strong>
-                                            <span class="badge bg-secondary ms-2">{{ memory.get_type_display }}</span>
+                                            <strong class="text-primary">{{ memory.author.username }}</strong>
+                                            <span class="badge bg-primary bg-opacity-75 text-white ms-2">{{ memory.get_type_display }}</span>
                                         </div>
                                         <small class="text-muted">{{ memory.created_at|date:"M j, Y" }}</small>
                                     </div>
                                     
                                     {% if memory.type == 'text' %}
-                                        <p class="memory-text">{{ memory.content|linebreaks }}</p>
+                                        <div class="memory-text" style="color: var(--color-gray-700);">{{ memory.content|linebreaks }}</div>
                                     {% elif memory.type == 'image' %}
                                         {% if memory.image %}
-                                        <img src="{{ memory.image.url }}" class="img-fluid rounded mb-2" alt="Memory image">
+                                        <img src="{{ memory.image.url }}" class="img-fluid rounded-lg shadow-sm mb-2" alt="Memory image" style="max-height: 400px; object-fit: cover;">
                                         {% endif %}
                                         {% if memory.content %}
-                                        <p class="memory-text">{{ memory.content|linebreaks }}</p>
+                                        <div class="memory-text mt-2" style="color: var(--color-gray-700);">{{ memory.content|linebreaks }}</div>
                                         {% endif %}
                                     {% elif memory.type == 'video' %}
                                         {% if memory.video_url %}
                                         <div class="video-memory mb-2">
-                                            <a href="{{ memory.video_url }}" target="_blank" class="btn btn-outline-primary">
+                                            <a href="{{ memory.video_url }}" target="_blank" class="btn btn-outline-primary btn-sm">
                                                 <i class="fas fa-play me-2"></i>Watch Video
                                             </a>
                                         </div>
                                         {% endif %}
                                         {% if memory.content %}
-                                        <p class="memory-text">{{ memory.content|linebreaks }}</p>
+                                        <div class="memory-text" style="color: var(--color-gray-700);">{{ memory.content|linebreaks }}</div>
                                         {% endif %}
                                     {% endif %}
                                 </div>
                             </div>
                         </div>
                         {% empty %}
-                        <div class="text-center py-5 text-muted">
-                            <i class="fas fa-heart fa-3x mb-3 d-block opacity-50"></i>
-                            <p class="mb-0">No memories shared yet. Be the first to share a memory of {{ memorial.name }}.</p>
+                        <div class="text-center py-5">
+                            <div class="empty-state">
+                                <i class="fas fa-heart fa-3x text-primary mb-3 d-block opacity-25"></i>
+                                <p class="text-muted mb-0">No memories shared yet. Be the first to share a memory of {{ memorial.name }}.</p>
+                            </div>
                         </div>
                         {% endfor %}
                     </div>
@@ -195,10 +317,11 @@
 
         <!-- Sidebar -->
         <div class="col-lg-4">
-            <!-- Contribution Section -->
-            <div class="card border-0 shadow-sm mb-4">
-                <div class="card-body text-center p-4">
-                    <h4 class="card-title mb-3" style="color: var(--color-primary);">
+            <div class="sidebar-sticky">
+                <!-- Contribution Section -->
+                <div class="sidebar-card rounded-lg shadow-sm mb-4">
+                    <div class="card-body text-center p-4">
+                    <h4 class="card-title mb-3 fw-bold text-primary">
                         <i class="fas fa-hands-helping me-2"></i>Honor Their Memory
                     </h4>
                     <p class="text-muted mb-4">Make a meaningful contribution in memory of {{ memorial.name }}</p>
@@ -207,7 +330,7 @@
                         {% if user.is_authenticated %}
                         <form method="post" class="d-inline">
                             {% csrf_token %}
-                            <button type="submit" name="donate" class="btn btn-success btn-lg w-100 shadow-sm">
+                            <button type="submit" name="donate" class="btn btn-success btn-lg w-100 shadow-sm text-white">
                                 <i class="fas fa-heart me-2"></i>Donate
                                 <div class="small mt-1 opacity-75">Current: {{ memorial.donations_count }}</div>
                             </button>
@@ -221,63 +344,132 @@
                             </button>
                         </form>
                         {% else %}
-                        <div class="alert alert-info mb-0">
-                            <a href="{% url 'login' %}" class="alert-link">Log in</a> to make contributions.
+                        <div class="alert alert-info mb-0 border-0 shadow-sm">
+                            <a href="{% url 'login' %}" class="alert-link fw-bold">Log in</a> to make contributions.
                         </div>
                         {% endif %}
                     </div>
                 </div>
             </div>
-
+            
             <!-- Memorial Info -->
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title text-primary mb-3">Memorial Details</h5>
+            <div class="sidebar-card rounded-lg shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="card-title text-primary mb-4 fw-bold"><i class="fas fa-info-circle me-2"></i>Memorial Details</h5>
                     
                     <div class="memorial-details">
-                        <div class="detail-item mb-2">
-                            <strong>Created by:</strong> {{ memorial.owner.user.username }}
+                        <div class="detail-item mb-3 pb-3 border-bottom">
+                            <div class="text-muted small mb-1">Created by</div>
+                            <div class="fw-semibold text-primary">{{ memorial.owner.user.username }}</div>
                         </div>
-                        <div class="detail-item mb-2">
-                            <strong>Created:</strong> {{ memorial.created_at|date:"F j, Y" }}
+                        <div class="detail-item mb-3 pb-3 border-bottom">
+                            <div class="text-muted small mb-1">Created</div>
+                            <div class="fw-semibold">{{ memorial.created_at|date:"F j, Y" }}</div>
                         </div>
-                        <div class="detail-item mb-2">
-                            <strong>Visibility:</strong> 
-                            <span class="badge bg-{% if memorial.visibility == 'public' %}success{% else %}secondary{% endif %}">
+                        <div class="detail-item mb-3 pb-3 border-bottom">
+                            <div class="text-muted small mb-1">Visibility</div>
+                            <span class="badge bg-{% if memorial.visibility == 'public' %}success{% else %}secondary{% endif %} text-white">
                                 {{ memorial.get_visibility_display }}
                             </span>
                         </div>
                         {% if memorial.dob %}
-                        <div class="detail-item mb-2">
-                            <strong>Born:</strong> {{ memorial.dob|date:"F j, Y" }}
+                        <div class="detail-item mb-3 pb-3 border-bottom">
+                            <div class="text-muted small mb-1">Born</div>
+                            <div class="fw-semibold">{{ memorial.dob|date:"F j, Y" }}</div>
                         </div>
                         {% endif %}
                         {% if memorial.dod %}
-                        <div class="detail-item mb-2">
-                            <strong>Passed:</strong> {{ memorial.dod|date:"F j, Y" }}
+                        <div class="detail-item mb-0">
+                            <div class="text-muted small mb-1">Passed</div>
+                            <div class="fw-semibold">{{ memorial.dod|date:"F j, Y" }}</div>
                         </div>
                         {% endif %}
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     </div>
 </div>
 
-<style>
-.memorial-profile-img,
-.memorial-profile-placeholder {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-}
+<!-- Delete Confirmation Modal -->
+{% if can_edit %}
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-danger shadow-lg" style="border-width: 3px;">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title fw-bold" id="deleteModalLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>⚠️ DELETE MEMORIAL - PERMANENT ACTION ⚠️
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4" id="deleteModalBody">
+                <h6 class="text-danger fw-bold mb-3 fs-5">
+                    You are about to permanently delete the memorial for <span class="text-decoration-underline">{{ memorial.name }}</span>
+                </h6>
+                
+                <div class="border border-danger rounded-lg p-3 mb-3 shadow-sm" style="background-color: #f8d7da;">
+                    <h6 class="fw-bold mb-2 text-danger"><i class="fas fa-trash-alt me-2"></i>The following will be PERMANENTLY DELETED:</h6>
+                    <ul class="mb-0 text-dark" id="deleteDetailsList">
+                        <li><strong>{{ memories.count }}</strong> memories shared by friends and family</li>
+                        <li><strong>{{ memorial.donations_count }}</strong> donation records</li>
+                        <li><strong>{{ memorial.trees_planted_count }}</strong> tree planting records</li>
+                        <li>Cover photo and all media files</li>
+                        <li>Complete biography and life story</li>
+                        <li>All statistics and memorial data</li>
+                    </ul>
+                </div>
+                
+                <div class="text-center p-3 rounded-lg mb-0 shadow-sm" style="background-color: #fff3cd; border: 2px solid #ffc107;">
+                    <p class="mb-0 fw-bold fs-5 text-danger">
+                        <i class="fas fa-question-circle me-2"></i>Are you absolutely certain you want to proceed?
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer border-0 bg-light d-flex justify-content-between">
+                <button type="button" class="btn btn-success btn-lg px-4 shadow-sm text-white" data-bs-dismiss="modal">
+                    <i class="fas fa-shield-alt me-2"></i>No, Keep Memorial Safe
+                </button>
+                <form method="post" action="{% url 'delete_memorial' memorial.slug %}" class="d-inline" id="deleteMemorialForm">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-lg px-4 shadow-sm" id="confirmDeleteBtn">
+                        <i class="fas fa-trash-alt me-2"></i>YES, DELETE FOREVER
+                    </button>
+                
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-.memory-item:last-child {
-    border-bottom: none !important;
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
-}
-</style>
+<script>
+// Preserve modal content - prevent any clearing
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteModal = document.getElementById('deleteModal');
+    const modalBody = document.getElementById('deleteModalBody');
+    
+    if (deleteModal && modalBody) {
+        // Store the original content
+        const originalContent = modalBody.innerHTML;
+        
+        // Restore content when modal is shown
+        deleteModal.addEventListener('show.bs.modal', function() {
+            if (modalBody.innerHTML.trim() === '') {
+                modalBody.innerHTML = originalContent;
+            }
+        });
+        
+        // Prevent any form from clearing the modal content
+        deleteModal.addEventListener('hide.bs.modal', function(e) {
+            // Only allow closing via the buttons, not by other means
+            if (!e.target.classList.contains('modal')) {
+                return true;
+            }
+        });
+    }
+});
+</script>
+{% endif %}
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -320,14 +512,29 @@ document.addEventListener('DOMContentLoaded', function() {
             navigator.clipboard.writeText(url).then(function() {
                 // Show success message
                 const btn = copyBtn;
-                const originalText = btn.innerHTML;
+                const originalHTML = btn.innerHTML;
                 btn.innerHTML = '<i class="fas fa-check me-2"></i>Link Copied!';
                 btn.classList.remove('btn-primary');
                 btn.classList.add('btn-success');
                 
+                // Revert back after 2 seconds
                 setTimeout(function() {
-                    btn.innerHTML = originalText;
+                    btn.innerHTML = originalHTML;
                     btn.classList.remove('btn-success');
+                    btn.classList.add('btn-primary');
+                }, 2000);
+            }).catch(function(err) {
+                // Fallback if clipboard API fails
+                console.error('Failed to copy: ', err);
+                const btn = copyBtn;
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-exclamation me-2"></i>Copy Failed';
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-danger');
+                
+                setTimeout(function() {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('btn-danger');
                     btn.classList.add('btn-primary');
                 }, 2000);
             });

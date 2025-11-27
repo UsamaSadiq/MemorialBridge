@@ -1,0 +1,109 @@
+/* MemorialBridge - Hero Layout */
+
+.hero-section {
+    background: linear-gradient(135deg, var(--color-primary-lighter) 0%, #ffffff 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(14, 104, 89, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.hero-cover-image {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 60vh;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.hero-cover-image::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(to bottom, transparent 0%, rgba(14, 104, 89, 0.05) 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.hero-cover-image .container {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-description {
+    line-height: 1.8;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-shape-1, .hero-shape-2 {
+    position: absolute;
+    border-radius: var(--radius-full);
+    opacity: 0.05;
+    z-index: -1;
+}
+
+.hero-shape-1 {
+    width: 400px;
+    height: 400px;
+    background: var(--color-primary);
+    top: -100px;
+    right: -100px;
+}
+
+.hero-shape-2 {
+    width: 300px;
+    height: 300px;
+    background: var(--color-accent);
+    bottom: -50px;
+    left: -50px;
+}
+
+/* Section Gradients */
+.section-gradient-1 {
+    background: linear-gradient(180deg, rgba(14, 104, 89, 0.03), rgba(14, 104, 89, 0.05));
+}
+
+.section-gradient-2 {
+    background: linear-gradient(180deg, rgba(14, 104, 89, 0.03), rgba(14, 104, 89, 0.08));
+}
+
+.section-gradient-3 {
+    background: linear-gradient(180deg, rgba(14, 104, 89, 0.08), rgba(14, 104, 89, 0.12));
+}
+
+.bg-gradient-primary {
+    background: var(--color-primary-lighter);
+}
+
+/* Responsive Hero */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 3rem 0 2rem;
+    }
+    
+    .hero-cover-image {
+        height: 50vh;
+        min-height: 350px;
+    }
+    
+    .display-3, .display-4 {
+        font-size: 2rem;
+    }
+}

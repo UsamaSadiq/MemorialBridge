@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Home - MemorialBridge{% endblock %}
+{% block title %}Home - MemorialBridge | Preserving Memories, Honoring Lives{% endblock %}
+
+{% block meta_description %}Create lasting tributes for those who have touched our hearts. Share memories, celebrate lives, and keep their legacy alive forever with MemorialBridge.{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -36,35 +38,40 @@
         line-height: 1.8;
         max-width: 800px;
         margin: 0 auto;
-        color: #000;
     }
     
     .trust-stat-number {
         font-size: 2rem;
     }
     
-    .section-gradient-1 {
-        background: linear-gradient(180deg, rgba(14, 104, 89, 0.03), rgba(14, 104, 89, 0.05));
+    .memorial-image-wrapper {
+        position: relative;
+        overflow: hidden;
     }
     
-    .section-gradient-2 {
-        background: linear-gradient(180deg, rgba(14, 104, 89, 0.03), rgba(14, 104, 89, 0.08));
+    .memorial-image-wrapper img {
+        transition: transform 0.3s ease;
     }
     
-    .section-gradient-3 {
-        background: linear-gradient(180deg, rgba(14, 104, 89, 0.08), rgba(14, 104, 89, 0.12));
+    .featured-memorial-card:hover .memorial-image-wrapper img {
+        transform: scale(1.05);
+    }
+    
+    /* Lazy load placeholder */
+    img[data-src] {
+        background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <!-- Hero Banner Section -->
-<section class="hero-banner position-relative overflow-hidden">
+<section class="hero-banner position-relative overflow-hidden" role="banner">
     <!-- Cover Image -->
     <div class="hero-cover-image">
         <div class="container text-center text-white py-5">
             <span class="badge bg-primary text-white mb-3 px-3 py-2 animate-fade-in">
-                <i class="fas fa-heart me-1"></i>Preserving Legacies Since 2024
+                <i class="fas fa-heart me-1" aria-hidden="true"></i>Preserving Legacies Since 2025
             </span>
             
             <h1 class="display-3 fw-bold mb-4 animate-slide-up">
@@ -78,15 +85,15 @@
             </p>
             
             <div class="d-flex flex-wrap gap-3 mb-4 justify-content-center animate-slide-up-delay-2">
-                <a href="{% url 'explore' %}" class="btn btn-primary btn-lg shadow-lg">
-                    <i class="fas fa-compass me-2"></i>Explore Memorials
+                <a href="{% url 'explore' %}" class="btn btn-primary btn-lg shadow-lg" aria-label="Explore memorial pages">
+                    <i class="fas fa-compass me-2" aria-hidden="true"></i>Explore Memorials
                 </a>
                 {% if user.is_authenticated %}
-                    <a href="{% url 'create_memorial' %}" class="btn btn-accent btn-lg shadow-lg">
-                        <i class="fas fa-plus me-2"></i>Create Memorial
+                    <a href="{% url 'create_memorial' %}" class="btn btn-primary btn-lg shadow-lg" aria-label="Create a new memorial">
+                        <i class="fas fa-plus me-2" aria-hidden="true"></i>Create Memorial
                     </a>
                 {% else %}
-                    <a href="{% url 'signup' %}" class="btn btn-accent btn-lg shadow-lg">
+                    <a href="{% url 'signup' %}" class="btn btn-primary btn-lg shadow-lg" aria-label="Get started with MemorialBridge">
                         Get Started Free
                     </a>
                 {% endif %}
@@ -97,23 +104,23 @@
     <!-- Trust Indicators Below Banner -->
     <div class="py-4 section-gradient-1">
         <div class="container">
-            <div class="trust-indicators animate-fade-in-delay">
+            <div class="trust-indicators animate-fade-in-delay" role="region" aria-label="Platform statistics">
                 <div class="row text-center g-3">
                     <div class="col-md-4">
                         <div class="trust-stat">
-                            <div class="fw-bold text-primary trust-stat-number">1000+</div>
+                            <div class="fw-bold text-primary trust-stat-number" aria-label="Over 1000 memorials">1000+</div>
                             <div class="text-muted">Memorials</div>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="trust-stat">
-                            <div class="fw-bold text-primary trust-stat-number">5000+</div>
+                            <div class="fw-bold text-primary trust-stat-number" aria-label="Over 5000 memories shared">5000+</div>
                             <div class="text-muted">Memories Shared</div>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="trust-stat">
-                            <div class="fw-bold text-primary trust-stat-number">100%</div>
+                            <div class="fw-bold text-primary trust-stat-number" aria-label="100 percent free forever">100%</div>
                             <div class="text-muted">Free Forever</div>
                         </div>
                     </div>
@@ -123,16 +130,58 @@
     </div>
 </section>
 
+<!-- How It Works Section -->
+<section class="py-5 section-gradient-2" aria-labelledby="how-it-works-heading">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 id="how-it-works-heading" class="fw-bold text-primary">How It Works</h2>
+            <p class="text-muted">Creating meaningful tributes in simple steps</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4 text-center">
+                <div class="feature-box">
+                    <div class="feature-icon mb-3" aria-hidden="true">
+                        <i class="fas fa-user-plus fa-3x text-primary"></i>
+                    </div>
+                    <h3 class="h4">Sign Up</h3>
+                    <p class="text-muted">Create your free account and verify your email to get started</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4 text-center">
+                <div class="feature-box">
+                    <div class="feature-icon mb-3" aria-hidden="true">
+                        <i class="fas fa-heart fa-3x text-primary"></i>
+                    </div>
+                    <h3 class="h4">Create Memorial</h3>
+                    <p class="text-muted">Preserve memories of your loved one with photos, stories, and biographical information</p>
+                </div>
+            </div>
+            
+            <div class="col-md-4 text-center">
+                <div class="feature-box">
+                    <div class="feature-icon mb-3" aria-hidden="true">
+                        <i class="fas fa-share-alt fa-3x text-primary"></i>
+                    </div>
+                    <h3 class="h4">Share & Remember</h3>
+                    <p class="text-muted">Invite others to share memories and contribute to their legacy</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Featured Memorials Carousel -->
 {% if featured_memorials %}
-<section class="py-5 section-gradient-2">
+<section class="py-5 section-gradient-3">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="fw-bold text-primary">Featured Memorials</h2>
-            <p class="text-muted">Celebrating lives that have made a difference</p>
+            <p class="text-muted">Preserving memories of our loved ones</p>
         </div>
         
-        <div id="featuredCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div id="featuredCarousel" class="carousel slide">
             <div class="carousel-indicators">
                 {% for memorial in featured_memorials %}
                 <button type="button" data-bs-target="#featuredCarousel" data-bs-slide-to="{{ forloop.counter0 }}" 
@@ -143,105 +192,116 @@
             <div class="carousel-inner">
                 {% for memorial in featured_memorials %}
                 <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-8">
-                            <div class="card memorial-card border-0 shadow-lg">
+                    <div class="row justify-content-center px-5">
+                        <div class="col-lg-8 col-md-10">
+                            <article class="card featured-memorial-card shadow-lg no-animate">
                                 <div class="row g-0">
-                                    <div class="col-md-4">
-                                        {% if memorial.cover_image %}
-                                            <img src="{{ memorial.cover_image.url }}" class="img-fluid h-100 object-cover rounded-start" alt="{{ memorial.name }}">
-                                        {% else %}
-                                            <div class="memorial-placeholder d-flex align-items-center justify-content-center h-100 bg-light rounded-start">
-                                                <i class="fas fa-user fa-4x text-muted"></i>
-                                            </div>
-                                        {% endif %}
+                                    <div class="col-md-5">
+                                        <div class="memorial-image-wrapper h-100">
+                                            {% if memorial.cover_image %}
+                                                <img {% if forloop.first %}src="{{ memorial.cover_image.url }}"{% else %}data-src="{{ memorial.cover_image.url }}" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 350'%3E%3Crect fill='%23f5f5f5' width='400' height='350'/%3E%3C/svg%3E"{% endif %} 
+                                                     class="img-fluid rounded-start h-100 w-100" 
+                                                     alt="Portrait of {{ memorial.name }}{% if memorial.dob and memorial.dod %}, lived {{ memorial.dob|date:'Y' }}-{{ memorial.dod|date:'Y' }}{% endif %}" 
+                                                     width="400"
+                                                     height="350"
+                                                     style="object-fit: cover; min-height: 350px;"
+                                                     loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+                                            {% else %}
+                                                <div class="memorial-placeholder d-flex align-items-center justify-content-center rounded-start h-100" 
+                                                     style="background: linear-gradient(135deg, rgba(14, 104, 89, 0.1), rgba(14, 104, 89, 0.05)); min-height: 350px;"
+                                                     role="img"
+                                                     aria-label="No image available for {{ memorial.name }}">
+                                                    <i class="fas fa-user fa-4x text-primary opacity-50" aria-hidden="true"></i>
+                                                </div>
+                                            {% endif %}
+                                        </div>
                                     </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body p-4">
-                                            <h3 class="card-title text-primary">{{ memorial.name }}</h3>
+                                    <div class="col-md-7">
+                                        <div class="card-body p-4 d-flex flex-column h-100">
+                                            <h3 class="h4 card-title text-primary fw-bold mb-2">{{ memorial.name }}</h3>
+                                            
                                             {% if memorial.dob and memorial.dod %}
-                                            <p class="text-muted mb-3">
-                                                {{ memorial.dob|date:"F j, Y" }} - {{ memorial.dod|date:"F j, Y" }}
+                                            <p class="text-muted small mb-3">
+                                                <i class="fas fa-calendar-alt me-1" aria-hidden="true"></i>
+                                                <time datetime="{{ memorial.dob|date:'Y-m-d' }}">{{ memorial.dob|date:"M j, Y" }}</time> - 
+                                                <time datetime="{{ memorial.dod|date:'Y-m-d' }}">{{ memorial.dod|date:"M j, Y" }}</time>
                                             </p>
                                             {% endif %}
-                                            <p class="card-text">{{ memorial.bio|truncatewords:30 }}</p>
                                             
-                                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                                <div class="contribution-stats">
-                                                    <span class="badge bg-success me-2">
-                                                        <i class="fas fa-heart me-1"></i>{{ memorial.donations_count }} Donations
+                                            {% if memorial.bio %}
+                                            <p class="text-muted mb-3 flex-grow-1">{{ memorial.bio|truncatewords:40 }}</p>
+                                            {% else %}
+                                            <p class="text-muted mb-3 flex-grow-1">No description available.</p>
+                                            {% endif %}
+                                            
+                                            <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between">
+                                                <div class="d-flex flex-wrap gap-2" role="list" aria-label="Memorial statistics">
+                                                    <span class="badge bg-success text-white px-3 py-2" role="listitem" aria-label="{{ memorial.donations_count }} donations">
+                                                        <i class="fas fa-heart me-1" aria-hidden="true"></i>{{ memorial.donations_count }}
                                                     </span>
-                                                    <span class="badge bg-primary">
-                                                        <i class="fas fa-tree me-1"></i>{{ memorial.trees_planted_count }} Trees
+                                                    <span class="badge bg-primary text-white px-3 py-2" role="listitem" aria-label="{{ memorial.trees_planted_count }} trees planted">
+                                                        <i class="fas fa-tree me-1" aria-hidden="true"></i>{{ memorial.trees_planted_count }}
                                                     </span>
                                                 </div>
+                                                <a href="{% url 'memorial_detail' memorial.slug %}" 
+                                                   class="btn btn-primary text-white px-3 py-2"
+                                                   aria-label="View full memorial for {{ memorial.name }}">
+                                                    View Memorial <i class="fas fa-arrow-right ms-2" aria-hidden="true"></i>
+                                                </a>
                                             </div>
-                                            
-                                            <a href="{% url 'memorial_detail' memorial.slug %}" class="btn btn-accent">
-                                                View Memorial <i class="fas fa-arrow-right ms-1"></i>
-                                            </a>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </article>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
             </div>
             
-            <button class="carousel-control-prev" type="button" data-bs-target="#featuredCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
+            <button class="carousel-control-prev" type="button" data-bs-target="#featuredCarousel" data-bs-slide="prev" aria-label="Previous memorial">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#featuredCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon"></span>
+            <button class="carousel-control-next" type="button" data-bs-target="#featuredCarousel" data-bs-slide="next" aria-label="Next memorial">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
     </div>
 </section>
 {% endif %}
+{% endblock %}
 
-<!-- How It Works Section -->
-<section class="py-5 section-gradient-3">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="fw-bold text-primary">How It Works</h2>
-            <p class="text-muted">Creating meaningful tributes in simple steps</p>
-        </div>
-        
-        <div class="row g-4">
-            <div class="col-md-4 text-center">
-                <div class="feature-box">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-user-plus fa-3x text-primary"></i>
-                    </div>
-                    <h4>Sign Up</h4>
-                    <p class="text-muted">Create your free account and verify your email to get started</p>
-                </div>
-            </div>
+{% block extra_js %}
+<script>
+    // Carousel enhancements
+    document.addEventListener('DOMContentLoaded', function() {
+        var carouselElement = document.getElementById('featuredCarousel');
+        if (carouselElement) {
+            // Prevent default anchor behavior on carousel controls
+            carouselElement.addEventListener('click', function(e) {
+                if (e.target.closest('.carousel-control-prev') || e.target.closest('.carousel-control-next')) {
+                    e.preventDefault();
+                }
+            });
             
-            <div class="col-md-4 text-center">
-                <div class="feature-box">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-heart fa-3x text-accent"></i>
-                    </div>
-                    <h4>Create Memorial</h4>
-                    <p class="text-muted">Preserve memories of your loved one with photos, stories, and biographical information</p>
-                </div>
-            </div>
+            // Load images when carousel slide changes
+            var carousel = new bootstrap.Carousel(carouselElement, {
+                interval: 5000,
+                pause: 'hover'
+            });
             
-            <div class="col-md-4 text-center">
-                <div class="feature-box">
-                    <div class="feature-icon mb-3">
-                        <i class="fas fa-share-alt fa-3x text-success"></i>
-                    </div>
-                    <h4>Share & Remember</h4>
-                    <p class="text-muted">Invite others to share memories and contribute to their legacy</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+            carouselElement.addEventListener('slide.bs.carousel', function (e) {
+                // Load next slide image
+                var nextSlide = e.relatedTarget;
+                var img = nextSlide.querySelector('img[data-src]');
+                if (img && img.dataset.src) {
+                    img.src = img.dataset.src;
+                    img.removeAttribute('data-src');
+                }
+            });
+        }
+    });
+</script>
 {% endblock %}

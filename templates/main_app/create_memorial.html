@@ -3,65 +3,163 @@
 
 {% block title %}Create Memorial - MemorialBridge{% endblock %}
 
+{% block extra_css %}
+<style>
+    .create-memorial-header {
+        background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+        padding: var(--spacing-lg) 0;
+        margin-bottom: var(--spacing-xl);
+    }
+    
+    .create-memorial-card {
+        background: var(--color-white);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        overflow: hidden;
+    }
+    
+    .section-divider {
+        border-top: 2px solid var(--color-gray-100);
+        margin: var(--spacing-xl) 0;
+    }
+    
+    .form-section-title {
+        color: var(--color-primary);
+        font-weight: 700;
+        font-size: var(--font-size-xl);
+        margin-bottom: var(--spacing-lg);
+        padding-bottom: var(--spacing-sm);
+        border-bottom: 3px solid var(--color-accent);
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+    }
+    
+    .form-section-title i {
+        color: var(--color-accent);
+        font-size: var(--font-size-lg);
+    }
+    
+    .form-section-wrapper {
+        margin-bottom: var(--spacing-2xl);
+    }
+    
+    .help-box {
+        background: linear-gradient(135deg, var(--color-primary-lighter), #ffffff);
+        border: 2px solid var(--color-primary-light);
+        border-left: 4px solid var(--color-primary);
+        padding: var(--spacing-lg);
+        border-radius: var(--radius-lg);
+        margin-bottom: var(--spacing-xl);
+        box-shadow: var(--shadow-sm);
+    }
+    
+    .help-box:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-2px);
+        transition: all var(--transition-base);
+    }
+    
+    .required-indicator {
+        color: var(--color-danger);
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container py-5">
+<!-- Page Header -->
+<div class="create-memorial-header">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center text-white">
+                <h1 class="h2 fw-bold mb-2">
+                    <i class="fas fa-{% if is_edit %}edit{% else %}heart{% endif %} me-2"></i>{% if is_edit %}Edit{% else %}Create a{% endif %} Memorial
+                </h1>
+                <p class="mb-0">{% if is_edit %}Update the memorial details{% else %}Preserve a lasting tribute for someone special{% endif %}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container pb-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="card border-0 shadow">
-                <div class="card-header bg-primary text-white">
-                    <h2 class="card-title mb-0">
-                        <i class="fas fa-heart me-2"></i>Create a Memorial
-                    </h2>
-                    <p class="mb-0 mt-2 opacity-75">Preserve memories of someone special by creating a lasting tribute</p>
+            <!-- Help Box - Moved to top -->
+            <div class="help-box">
+                <div class="d-flex align-items-start">
+                    <i class="fas fa-lightbulb fa-lg text-primary me-3 mt-1"></i>
+                    <div>
+                        <h6 class="fw-bold text-primary mb-2">
+                            <i class="fas fa-info-circle me-1"></i>Quick Guide
+                        </h6>
+                        <p class="mb-0 text-muted">
+                            {% if is_edit %}
+                            Update the memorial information below. All fields can be modified and your changes will be saved immediately.
+                            {% else %}
+                            Creating a memorial is a meaningful way to preserve someone's memory and allow others to share their stories. 
+                            Fill out the form below with as much detail as you'd like. All fields can be edited later from your dashboard.
+                            {% endif %}
+                        </p>
+                    </div>
                 </div>
-                
-                <div class="card-body p-4">
+            </div>
+            
+            <div class="create-memorial-card">
+                <div class="card-body p-4 p-md-5">
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         
-                        <!-- Basic Information -->
-                        <div class="mb-4">
-                            <h4 class="text-primary mb-3">Basic Information</h4>
+                        <!-- Basic Information Section -->
+                        <div class="form-section-wrapper">
+                            <div class="mb-4">
+                                <h3 class="form-section-title">
+                                    <i class="fas fa-user-circle"></i>
+                                    Basic Information
+                                </h3>
+                            </div>
                             
-                            <div class="mb-3">
-                                <label for="{{ form.name.id_for_label }}" class="form-label fw-bold">
-                                    Name <span class="text-danger">*</span>
+                            <div class="mb-4">
+                                <label for="{{ form.name.id_for_label }}" class="form-label">
+                                    Name <span class="required-indicator">*</span>
                                 </label>
                                 {{ form.name }}
                                 {% if form.name.errors %}
-                                <div class="text-danger mt-1">
+                                <div class="invalid-feedback d-block">
                                     {% for error in form.name.errors %}
-                                    <small>{{ error }}</small>
+                                    {{ error }}
                                     {% endfor %}
                                 </div>
                                 {% endif %}
-                                <div class="form-text">The full name of the person being memorialized</div>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>The full name of the person being memorialized
+                                </div>
                             </div>
                             
                             <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="{{ form.dob.id_for_label }}" class="form-label fw-bold">
+                                <div class="col-md-6 mb-4">
+                                    <label for="{{ form.dob.id_for_label }}" class="form-label">
                                         Date of Birth
                                     </label>
                                     {{ form.dob }}
                                     {% if form.dob.errors %}
-                                    <div class="text-danger mt-1">
+                                    <div class="invalid-feedback d-block">
                                         {% for error in form.dob.errors %}
-                                        <small>{{ error }}</small>
+                                        {{ error }}
                                         {% endfor %}
                                     </div>
                                     {% endif %}
                                 </div>
                                 
-                                <div class="col-md-6 mb-3">
-                                    <label for="{{ form.dod.id_for_label }}" class="form-label fw-bold">
+                                <div class="col-md-6 mb-4">
+                                    <label for="{{ form.dod.id_for_label }}" class="form-label">
                                         Date of Passing
                                     </label>
                                     {{ form.dod }}
                                     {% if form.dod.errors %}
-                                    <div class="text-danger mt-1">
+                                    <div class="invalid-feedback d-block">
                                         {% for error in form.dod.errors %}
-                                        <small>{{ error }}</small>
+                                        {{ error }}
                                         {% endfor %}
                                     </div>
                                     {% endif %}
@@ -69,118 +167,120 @@
                             </div>
                         </div>
                         
-                        <!-- Biography -->
-                        <div class="mb-4">
-                            <h4 class="text-primary mb-3">Biography</h4>
-                            
-                            <div class="mb-3">
-                                <label for="{{ form.bio.id_for_label }}" class="form-label fw-bold">
+                        <div class="section-divider"></div>
+                        
+                        <!-- Biography Section -->
+                        <div class="form-section-wrapper">
+                            <div class="mb-4">
+                                <h3 class="form-section-title">
+                                    <i class="fas fa-book-open"></i>
                                     Life Story
+                                </h3>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="{{ form.bio.id_for_label }}" class="form-label">
+                                    Biography
                                 </label>
                                 {{ form.bio }}
                                 {% if form.bio.errors %}
-                                <div class="text-danger mt-1">
+                                <div class="invalid-feedback d-block">
                                     {% for error in form.bio.errors %}
-                                    <small>{{ error }}</small>
+                                    {{ error }}
                                     {% endfor %}
                                 </div>
                                 {% endif %}
                                 <div class="form-text">
-                                    Share their story, achievements, personality, and what made them special. 
-                                    This will help others understand and remember their legacy.
+                                    <i class="fas fa-pen me-1"></i>Share their story, achievements, personality, and what made them special
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- Photo & Settings -->
-                        <div class="mb-4">
-                            <h4 class="text-primary mb-3">Photo & Settings</h4>
+                        <div class="section-divider"></div>
+                        
+                        <!-- Photo & Settings Section -->
+                        <div class="form-section-wrapper">
+                            <div class="mb-4">
+                                <h3 class="form-section-title">
+                                    <i class="fas fa-image"></i>
+                                    Photo & Settings
+                                </h3>
+                            </div>
                             
-                            <div class="mb-3">
-                                <label for="{{ form.cover_image.id_for_label }}" class="form-label fw-bold">
+                            <div class="mb-4">
+                                <label for="{{ form.cover_image.id_for_label }}" class="form-label">
                                     Cover Photo
                                 </label>
                                 {{ form.cover_image }}
                                 {% if form.cover_image.errors %}
-                                <div class="text-danger mt-1">
+                                <div class="invalid-feedback d-block">
                                     {% for error in form.cover_image.errors %}
-                                    <small>{{ error }}</small>
+                                    {{ error }}
                                     {% endfor %}
                                 </div>
                                 {% endif %}
                                 <div class="form-text">
-                                    A meaningful photo that represents them well. This will be displayed prominently on their memorial page.
+                                    <i class="fas fa-camera me-1"></i>A meaningful photo that represents them well. This will be displayed prominently on their memorial page
                                 </div>
                             </div>
                             
-                            <div class="mb-3">
-                                <label for="{{ form.visibility.id_for_label }}" class="form-label fw-bold">
+                            <div class="mb-4">
+                                <label for="{{ form.visibility.id_for_label }}" class="form-label">
                                     Privacy Setting
                                 </label>
                                 {{ form.visibility }}
                                 {% if form.visibility.errors %}
-                                <div class="text-danger mt-1">
+                                <div class="invalid-feedback d-block">
                                     {% for error in form.visibility.errors %}
-                                    <small>{{ error }}</small>
+                                    {{ error }}
                                     {% endfor %}
                                 </div>
                                 {% endif %}
                                 <div class="form-text">
-                                    <strong>Public:</strong> Anyone can view and add memories to this memorial<br>
+                                    <i class="fas fa-lock me-1"></i>
+                                    <strong>Public:</strong> Anyone can view and add memories<br>
                                     <strong>Private:</strong> Only you can view and manage this memorial
                                 </div>
                             </div>
                         </div>
                         
                         <!-- Form Actions -->
-                        <div class="d-flex justify-content-between align-items-center">
-                            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 mt-5 pt-4 border-top">
+                            <a href="{% if is_edit %}{% url 'memorial_detail' memorial.slug %}{% else %}{% url 'dashboard' %}{% endif %}" class="btn btn-outline-secondary">
                                 <i class="fas fa-arrow-left me-2"></i>Cancel
                             </a>
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-heart me-2"></i>Create Memorial
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="fas fa-{% if is_edit %}save{% else %}heart{% endif %} me-2"></i>{% if is_edit %}Update Memorial{% else %}Create Memorial{% endif %}
                             </button>
                         </div>
                     </form>
-                </div>
-            </div>
-            
-            <!-- Help Text -->
-            <div class="mt-4 text-center">
-                <div class="text-muted">
-                    <i class="fas fa-info-circle me-2"></i>
-                    Need help? Creating a memorial is a meaningful way to preserve someone's memory and allow others to share their stories.
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<style>
-.card-header {
-    border-radius: 0.375rem 0.375rem 0 0;
-}
-
-.form-label.fw-bold {
-    color: #495057;
-}
-
-.form-control:focus,
-.form-select:focus {
-    border-color: #168E47;
-    box-shadow: 0 0 0 0.2rem rgba(22, 142, 71, 0.25);
-}
-
-.btn-primary {
-    background-color: #168E47;
-    border-color: #168E47;
-}
-
-.btn-primary:hover {
-    background-color: #0f6b36;
-    border-color: #0f6b36;
-}
-
-
-</style>
+{% block extra_js %}
+<script>
+// Remove maxlength restriction from bio field to prevent validation errors
+document.addEventListener('DOMContentLoaded', function() {
+    // Wait a bit for the page to fully load
+    setTimeout(function() {
+        const bioField = document.getElementById('id_bio');
+        if (bioField) {
+            // Remove maxlength attribute completely
+            bioField.removeAttribute('maxlength');
+            bioField.removeAttribute('data-maxlength');
+            
+            // Set maxLength property to a very large number instead of -1
+            // -1 might be interpreted as 1 by some browsers
+            bioField.maxLength = 524288; // 512KB, effectively unlimited for text
+            
+            console.log('Bio field maxLength set to:', bioField.maxLength);
+        }
+    }, 100);
+});
+</script>
 {% endblock %}
+{% endblock %}
+
