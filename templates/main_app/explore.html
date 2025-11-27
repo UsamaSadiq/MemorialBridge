@@ -16,37 +16,20 @@
     <!-- Enhanced Search Section -->
     <div class="search-section bg-white shadow-sm rounded-lg p-4 mb-4">
         <form method="get" id="searchForm">
-            <div class="row g-3">
-                <!-- Search Input -->
-                <div class="col-lg-8">
-                    <div class="search-input-wrapper">
-                        <i class="fas fa-search search-icon"></i>
-                        <input type="text" 
-                               name="search" 
-                               class="form-control form-control-lg" 
-                               placeholder="Search memorials by name, story, or keyword..." 
-                               value="{{ search_query }}"
-                               id="searchInput"
-                               autocomplete="off">
-                        <button type="button" 
-                                class="btn-clear {% if not search_query %}d-none{% endif %}"
-                                id="clearSearch">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Search Button & Create -->
-                <div class="col-lg-4 d-flex gap-2">
-                    <button type="submit" class="btn btn-primary flex-grow-1">
-                        <i class="fas fa-search me-1"></i>Search
-                    </button>
-                    {% if user.is_authenticated and user.userprofile.verified %}
-                    <a href="{% url 'create_memorial' %}" class="btn btn-accent">
-                        <i class="fas fa-plus me-1"></i>Create
-                    </a>
-                    {% endif %}
-                </div>
+            <div class="search-input-wrapper">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" 
+                       name="search" 
+                       class="form-control form-control-lg" 
+                       placeholder="Search memorials by name, story, or keyword... (Press Enter to search)" 
+                       value="{{ search_query }}"
+                       id="searchInput"
+                       autocomplete="off">
+                <button type="button" 
+                        class="btn-clear {% if not search_query %}d-none{% endif %}"
+                        id="clearSearch">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
         </form>
     </div>
