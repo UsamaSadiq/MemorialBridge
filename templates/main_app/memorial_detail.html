@@ -68,7 +68,122 @@
     
     .add-memory-section {
         background: linear-gradient(135deg, rgba(14, 104, 89, 0.05), rgba(14, 104, 89, 0.02));
+        border: 1px solid rgba(14, 104, 89, 0.15);
+        transition: all 0.3s ease;
+    }
+    
+    .add-memory-section:hover {
+        border-color: rgba(14, 104, 89, 0.25);
+        box-shadow: 0 8px 25px rgba(14, 104, 89, 0.08);
+    }
+    
+    .memory-form-header h5 {
+        color: var(--color-primary);
+        font-weight: 700;
+    }
+    
+    .memory-form .form-group {
+        margin-bottom: 0;
+    }
+    
+    .memory-form .form-label {
+        color: var(--color-gray-700);
+        font-weight: 600;
+        margin-bottom: var(--spacing-sm);
+        display: flex;
+        align-items: center;
+        font-size: var(--font-size-sm);
+    }
+    
+    .memory-form .form-label i {
+        color: var(--color-primary);
+        width: 16px;
+    }
+    
+    .memory-form .form-control,
+    .memory-form .form-select {
+        border: 1px solid rgba(14, 104, 89, 0.2);
+        border-radius: var(--radius-md);
+        transition: all var(--transition-base);
+        font-size: var(--font-size-base);
+    }
+    
+    .memory-form .form-control:focus,
+    .memory-form .form-select:focus {
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 0.2rem rgba(14, 104, 89, 0.15);
+        outline: none;
+    }
+    
+    .memory-form .form-text {
+        margin-top: var(--spacing-xs);
+        color: var(--color-gray-500);
+        font-size: var(--font-size-xs);
+    }
+    
+    .memory-form .form-actions {
+        border-color: rgba(14, 104, 89, 0.1) !important;
+    }
+    
+    .memory-form .btn-primary {
+        background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+        border: none;
+        border-radius: var(--radius-md);
+        font-weight: 600;
+        transition: all var(--transition-base);
+        text-transform: none;
+    }
+    
+    .memory-form .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(14, 104, 89, 0.25);
+        background: linear-gradient(135deg, var(--color-primary-dark), #0a3f36);
+    }
+    
+    .memory-form .btn-primary:active {
+        transform: translateY(0);
+        box-shadow: 0 4px 12px rgba(14, 104, 89, 0.2);
+    }
+    
+    .field-focused {
+        transform: translateY(-1px);
+        transition: transform var(--transition-fast);
+    }
+    
+    .char-counter {
+        font-size: var(--font-size-xs) !important;
+        margin-top: var(--spacing-xs) !important;
+        transition: color var(--transition-fast);
+    }
+    
+    .file-preview {
+        background: rgba(14, 104, 89, 0.05);
         border: 1px solid rgba(14, 104, 89, 0.1);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-sm);
+    }
+    
+    .memory-form button[disabled] {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none !important;
+    }
+    
+    /* Memory field transitions */
+    #memory-content-field,
+    #memory-image-field,
+    #memory-video-field {
+        transition: opacity var(--transition-base), transform var(--transition-base);
+        transform: translateY(0);
+        opacity: 1;
+    }
+    
+    #memory-content-field[style*="none"],
+    #memory-image-field[style*="none"],
+    #memory-video-field[style*="none"] {
+        opacity: 0;
+        transform: translateY(-10px);
+        pointer-events: none;
     }
     
     .memory-item {
@@ -223,36 +338,79 @@
                             
                             <!-- Add Memory Form -->
                             {% if user.is_authenticated %}
-                                    <div class="add-memory-section mb-4 p-4 rounded-lg">
-                                <h5 class="mb-3 fw-bold text-primary"><i class="fas fa-pen me-2"></i>Share a Memory</h5>
-                                <form method="post" enctype="multipart/form-data">
+                            <div class="add-memory-section mb-4 p-4 rounded-lg border shadow-sm">
+                                <div class="memory-form-header mb-4">
+                                    <h5 class="mb-2 fw-bold text-primary">
+                                        <i class="fas fa-pen-fancy me-2"></i>Share a Memory
+                                    </h5>
+                                    <p class="text-muted small mb-0">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Share a special memory, story, or moment you had with {{ memorial.name }}
+                                    </p>
+                                </div>
+                                
+                                <form method="post" enctype="multipart/form-data" class="memory-form">
                                     {% csrf_token %}
                                     <input type="hidden" name="memory_submit" value="1">
                                     
-                                    <div class="row">
-                                        <div class="col-md-3 mb-3">
-                                            {{ memory_form.type.label_tag }}
-                                            {{ memory_form.type }}
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="{{ memory_form.type.id_for_label }}" class="form-label">
+                                                    <i class="fas fa-list me-1"></i>Memory Type
+                                                </label>
+                                                {{ memory_form.type }}
+                                                <div class="form-text">
+                                                    <small class="text-muted">Choose how you'd like to share your memory</small>
+                                                </div>
+                                            </div>
                                         </div>
-                                                <div class="col-md-9 mb-3">
-                                            <div id="memory-content-field">
-                                                {{ memory_form.content.label_tag }}
-                                                {{ memory_form.content }}
-                                            </div>
-                                            <div id="memory-image-field" style="display: none;">
-                                                {{ memory_form.image.label_tag }}
-                                                {{ memory_form.image }}
-                                            </div>
-                                            <div id="memory-video-field" style="display: none;">
-                                                {{ memory_form.video_url.label_tag }}
-                                                {{ memory_form.video_url }}
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <div id="memory-content-field">
+                                                    <label for="{{ memory_form.content.id_for_label }}" class="form-label">
+                                                        <i class="fas fa-comment-alt me-1"></i>Your Memory
+                                                    </label>
+                                                    {{ memory_form.content }}
+                                                    <div class="form-text">
+                                                        <small class="text-muted">Share your favorite memory, story, or what made them special</small>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div id="memory-image-field" style="display: none;">
+                                                    <label for="{{ memory_form.image.id_for_label }}" class="form-label">
+                                                        <i class="fas fa-camera me-1"></i>Upload Image
+                                                    </label>
+                                                    {{ memory_form.image }}
+                                                    <div class="form-text">
+                                                        <small class="text-muted">Share a meaningful photo or image</small>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div id="memory-video-field" style="display: none;">
+                                                    <label for="{{ memory_form.video_url.id_for_label }}" class="form-label">
+                                                        <i class="fas fa-video me-1"></i>Video URL
+                                                    </label>
+                                                    {{ memory_form.video_url }}
+                                                    <div class="form-text">
+                                                        <small class="text-muted">Share a YouTube link or other video URL</small>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     
-                                    <button type="submit" class="btn btn-primary shadow-sm">
-                                        <i class="fas fa-plus me-2"></i>Add Memory
-                                    </button>
+                                    <div class="form-actions mt-4 pt-3 border-top">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="text-muted">
+                                                <i class="fas fa-heart me-1"></i>
+                                                Your memory will be shared with love and respect
+                                            </small>
+                                            <button type="submit" class="btn btn-primary btn-lg px-4 shadow-sm">
+                                                <i class="fas fa-plus me-2"></i>Share Memory
+                                            </button>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                             {% else %}
@@ -486,21 +644,59 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (typeSelect) {
         typeSelect.addEventListener('change', function() {
-            // Hide all fields first
-            contentField.style.display = 'none';
-            imageField.style.display = 'none';
-            videoField.style.display = 'none';
+            // Hide all fields with smooth transition
+            const hideField = (field) => {
+                if (field) {
+                    field.style.opacity = '0';
+                    field.style.transform = 'translateY(-10px)';
+                    setTimeout(() => {
+                        field.style.display = 'none';
+                    }, 200);
+                }
+            };
             
-            // Show appropriate field based on selection
-            if (this.value === 'text') {
-                contentField.style.display = 'block';
-            } else if (this.value === 'image') {
-                imageField.style.display = 'block';
-                contentField.style.display = 'block'; // Optional caption
-            } else if (this.value === 'video') {
-                videoField.style.display = 'block';
-                contentField.style.display = 'block'; // Optional description
-            }
+            const showField = (field) => {
+                if (field) {
+                    field.style.display = 'block';
+                    setTimeout(() => {
+                        field.style.opacity = '1';
+                        field.style.transform = 'translateY(0)';
+                    }, 10);
+                }
+            };
+            
+            // Hide all fields first
+            hideField(contentField);
+            hideField(imageField);
+            hideField(videoField);
+            
+            // Show appropriate field based on selection with delay for smooth transition
+            setTimeout(() => {
+                if (this.value === 'text') {
+                    showField(contentField);
+                    // Update label for text memory
+                    const label = contentField.querySelector('label');
+                    if (label) {
+                        label.innerHTML = '<i class="fas fa-comment-alt me-1"></i>Your Memory';
+                    }
+                } else if (this.value === 'image') {
+                    showField(imageField);
+                    showField(contentField);
+                    // Update label for caption
+                    const label = contentField.querySelector('label');
+                    if (label) {
+                        label.innerHTML = '<i class="fas fa-edit me-1"></i>Caption (optional)';
+                    }
+                } else if (this.value === 'video') {
+                    showField(videoField);
+                    showField(contentField);
+                    // Update label for description
+                    const label = contentField.querySelector('label');
+                    if (label) {
+                        label.innerHTML = '<i class="fas fa-edit me-1"></i>Description (optional)';
+                    }
+                }
+            }, 200);
         });
         
         // Trigger change event on page load
@@ -566,6 +762,104 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 300);
         }, 3000);
     }
+    
+    // Enhanced memory form functionality
+    function initializeMemoryFormEnhancements() {
+        const memoryForm = document.querySelector('.memory-form');
+        if (!memoryForm) return;
+        
+        // Add form submission animations
+        const submitBtn = memoryForm.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            memoryForm.addEventListener('submit', function() {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sharing Memory...';
+            });
+        }
+        
+        // Enhance field focus effects
+        const formControls = memoryForm.querySelectorAll('.form-control, .form-select');
+        formControls.forEach(control => {
+            control.addEventListener('focus', function() {
+                this.parentElement.classList.add('field-focused');
+            });
+            
+            control.addEventListener('blur', function() {
+                this.parentElement.classList.remove('field-focused');
+            });
+        });
+        
+        // Character count for textarea
+        const textarea = memoryForm.querySelector('textarea');
+        if (textarea) {
+            const createCharCounter = () => {
+                const counter = document.createElement('div');
+                counter.className = 'char-counter text-muted small mt-1';
+                counter.style.textAlign = 'right';
+                return counter;
+            };
+            
+            const updateCounter = (counter) => {
+                const length = textarea.value.length;
+                counter.textContent = `${length} characters`;
+                
+                if (length > 500) {
+                    counter.style.color = '#dc3545';
+                } else if (length > 300) {
+                    counter.style.color = '#ffc107';
+                } else {
+                    counter.style.color = '#6c757d';
+                }
+            };
+            
+            const counter = createCharCounter();
+            textarea.parentElement.appendChild(counter);
+            updateCounter(counter);
+            
+            textarea.addEventListener('input', () => updateCounter(counter));
+        }
+        
+        // File input enhancements
+        const fileInput = memoryForm.querySelector('input[type="file"]');
+        if (fileInput) {
+            fileInput.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    // File size validation
+                    if (file.size > 5 * 1024 * 1024) { // 5MB
+                        alert('Please select an image smaller than 5MB.');
+                        this.value = '';
+                        return;
+                    }
+                    
+                    // Show preview
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        let preview = fileInput.parentElement.querySelector('.file-preview');
+                        if (!preview) {
+                            preview = document.createElement('div');
+                            preview.className = 'file-preview mt-2';
+                            fileInput.parentElement.appendChild(preview);
+                        }
+                        
+                        preview.innerHTML = `
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="${e.target.result}" alt="Preview" class="rounded" style="width: 60px; height: 60px; object-fit: cover;">
+                                <div>
+                                    <div class="fw-semibold text-primary">${file.name}</div>
+                                    <small class="text-muted">${(file.size / 1024).toFixed(1)} KB</small>
+                                </div>
+                            </div>
+                        `;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+    }
+    
+    // Initialize memory form enhancements
+    initializeMemoryFormEnhancements();
 });
 </script>
 
