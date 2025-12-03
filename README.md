@@ -2,6 +2,14 @@
 
 A Django web application for preserving memories and celebrating lives. This project allows users to create memorials, share memories, and contribute to meaningful tributes.
 
+## Connect With Us
+
+- **Website**: [thememorialbridge.com](https://memorialbridge.onrender.com)
+- **Instagram**: [@the.memorial.bridge](https://instagram.com/the.memorial.bridge)
+- **Facebook**: [MemorialBridge](https://facebook.com/MemorialBridge)
+- **LinkedIn**: [MemorialBridge](https://linkedin.com/company/MemorialBridge)
+- **TikTok**: [@thememorialbridge](https://tiktok.com/@thememorialbridge)
+
 ## Features
 
 - User authentication with email verification simulation
@@ -152,4 +160,12 @@ python manage.py createsuperuser
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+### MIT License Summary
+The MIT License is a permissive open-source license that allows you to:
+- Use, copy, modify, and distribute this software
+- Use it for commercial purposes
+- Include it in proprietary software
+
+The only requirement is that the license and copyright notice must be included with any substantial portions of the software.
