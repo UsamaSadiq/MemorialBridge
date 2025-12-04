@@ -1,0 +1,17 @@
+# .github/workflows/keep-alive-render.yml
+name: Keep Render Site Alive (custom domain)
+
+on:
+  schedule:
+    # every 15 minutes — adjust as needed
+    - cron: '*/15 * * * *'
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping custom domain to keep Render awake
+        run: |
+          curl -fsS https://thememorialbridge.com/ \
+            -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36" \
+            > /dev/null || true
