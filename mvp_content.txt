@@ -1,0 +1,279 @@
+Memorial Bridge MVP – Developer System Prompt
+Objective
+Build the MVP (Minimum Viable Product) for  Memorial Bridge, a respectful global platform where users
+can create memorial pages for loved ones and connect those memories to charitable causes.
+Architecture Requirements
+Backend: Use Python FastAPI to develop a RESTful API server .
+Frontend: Use ReactJS for the web client interface.
+Mobile:(Optional for MVP) Keep the architecture open for a future React Native app, but mobile is
+not required in this initial POC.
+Database: Use PostgreSQL (or a similar relational database) to store application data.
+Image Storage: Store uploaded images locally during development. Plan to integrate an S3-
+compatible storage for images in the future (for production deployment).
+Hosting: Ensure the application can run on Replit or a similar low-cost/free deployment platform for
+demonstration.
+Core Functional Scope (MVP)
+User Authentication System:
+Implement email/password signup and login functionality with form validation (e.g. valid email
+format, password strength).
+Securely hash user passwords using bcrypt before storing in the database.
+Use JWT for session management: issue JWTs upon successful login and require a valid JWT for
+protected endpoints (e.g. creating a memorial, posting a comment).
+Include logout functionality (invalidate or expire the JWT on the client side).
+Memorial Creation Workflow:
+Restrict memorial creation to authenticated users only (users must be logged in to create a
+memorial).
+Memorial entry fields:
+Full Name of the person being remembered.
+Dates (birth and death dates).
+Short Story or Tribute: A text field for a short biography or tribute (rich text editing is
+optional; plain text is acceptable for MVP).
+Images: Allow up to 2 images to be uploaded for each memorial. Include image upload with
+validation (acceptable file types, size limits) and show a preview of images before submission.
+Privacy Setting: Let the user choose either "public" (visible on public memorial list) or "link-
+only" (unlisted, only accessible via direct link) for the memorial.
+• 
+• 
+• 
+• 
+• 
+• 
+1. 
+2. 
+3. 
+4. 
+5. 
+6. 
+7. 
+8. 
+◦ 
+◦ 
+◦ 
+◦ 
+◦ 
+1After a user submits a memorial, set its status to “pending approval”. It should not appear in any
+public listings until approved by an admin.
+Create a workflow for an  admin review: an admin user can view pending memorials and either
+approve (publish it) or reject (deny publication) each submission via the admin dashboard.
+Memorial Viewing:
+Implement a public dashboard (homepage or dedicated page) that lists all approved memorials
+that are marked as public. Each listing might show the person's name and maybe a thumbnail or
+dates, and link to the full memorial page.
+Implement an individual memorial page for each approved memorial. This page should display:
+The person’s full name and life dates.
+The story/tribute text.
+The memorial images (up to 2, displayed with appropriate size/scaling).
+If the memorial has associated charities (see Charity Listings below), show a section with
+those charitable causes and provide a static donation link or button for each (for MVP ,
+these links can open the charity's website in a new tab).
+If a memorial is privacy "link-only", do not show it on the public dashboard. Ensure that such a page
+can still be viewed by anyone with the direct URL (no login required, since it's meant for sharing via
+link), but it won't be discoverable otherwise.
+Comment System:
+Enable an authenticated user to leave comments on a memorial’s page.
+Free Users: Can post text-only comments. (The comment input for free users should not allow
+image uploads.)
+Pro Plan Users: Can post comments that include images, with a limit of up to 5 images per
+memorial per user .
+Handle the image limit per user/memorial: if a Pro user has uploaded 5 images in comments
+on a particular memorial, they must delete an existing image comment to free up space for a
+new one.
+Provide a UI indication of how many image comments the Pro user has used on that
+memorial (e.g. "3/5 image comments used").
+Display comments in chronological order (either oldest first or newest first – decide and implement
+consistently).
+Implement basic moderation tools for comments:
+Auto-Filter: Automatically filter out or flag profanity and inappropriate language in
+comments. (This can be a simple keyword blacklist approach for MVP .)
+Reporting: Allow users to report a comment for review. For MVP , this can just tag the
+comment as reported (so an admin can see it in the admin panel and decide to remove it or
+take action).
+Pro Plan Subscriptions (Mocked for MVP):
+9. 
+10. 
+11. 
+12. 
+13. 
+◦ 
+◦ 
+◦ 
+◦ 
+14. 
+15. 
+16. 
+17. 
+18. 
+◦ 
+◦ 
+19. 
+20. 
+◦ 
+◦ 
+21. 
+2For the MVP , do not integrate real payment processing. Instead, simulate the Pro subscription
+feature:
+Add a field in the user database (e.g., is_pro boolean) to mark Pro users.
+There will be no user-facing purchase flow; instead, for testing, an admin or developer can
+manually toggle a user's is_pro status in the database.
+Adjust application logic based on is_pro:
+In the frontend, show or enable the image-upload feature in comments only for users
+marked as Pro. Non-Pro users should see a prompt to upgrade or a disabled upload UI (or
+simply no option to upload images).
+In the backend, enforce the rule: if a non-Pro user tries to submit a comment with an image
+(e.g., via a crafted request), reject it.
+Provide a way in the admin panel or via a script to mark a regular user as Pro for demonstration
+purposes (since no payment system exists, this is a manual switch).
+Charity Listings (View-Only in MVP):
+Implement an admin interface to manage charities. Each charity entry includes:
+Charity Name.
+A short Description or mission statement.
+A URL (link to the charity’s website or donation page).
+Admin can create, edit, or delete charity entries. (For MVP , a simple form in the admin dashboard is
+sufficient.)
+Allow users creating or editing a memorial to associate one or more charities with that memorial.
+This could be a multi-select field of available charities (populated from the charity list managed by
+admin).
+On an approved memorial’s page, if charities are associated, display a donation section. For MVP:
+List the associated charity names (each could have a brief description).
+For each charity, provide a static donate link/button that opens the charity’s provided URL.
+(No on-site payment processing is needed in this POC.)
+(Note: There is no need to track actual donations; this feature is purely informational in the MVP .)
+Admin Features
+Implement a simple Admin Login mechanism. This could be a separate admin account with a
+special role or a specific endpoint for admin authentication. (For MVP , even hard-coding one admin
+user or using an environment variable for an admin password is acceptable, given this is a
+prototype.)
+Develop an Admin Dashboard with the following capabilities:
+Approve/Reject Memorials: Show a list of memorial submissions that are in "pending" status. The
+admin can review each (display basic info and images) and choose to approve or reject. 
+Approving a memorial sets it to "approved" status, making it visible on the site (according to
+its privacy setting).
+Rejecting a memorial could either delete it or mark it as rejected; if rejected, optionally
+provide a way to notify the user or allow them to edit and resubmit (this can be simplified in
+MVP).
+22. 
+◦ 
+◦ 
+23. 
+◦ 
+◦ 
+24. 
+25. 
+26. 
+◦ 
+◦ 
+◦ 
+27. 
+28. 
+29. 
+◦ 
+◦ 
+30. 
+• 
+• 
+• 
+◦ 
+◦ 
+3Manage Charities: Provide a section to add new charities and edit or remove existing ones. This
+should tie into the Charity Listings feature described above.
+View Users / Pro Status: Provide a basic view of user accounts. At minimum, show a list of users
+with an indication of which users are marked as Pro and possibly a way to toggle a user's Pro status.
+(This helps simulate the subscription feature for demonstration.)
+Moderate Comments: (Optional for MVP) If time permits, include a view for reported comments or
+an interface to remove inappropriate comments. At minimum, ensure admins can see which
+comments have been flagged by users in the database, even if the UI is rudimentary.
+UI/UX Guidelines
+Overall Design: Use a respectful, clean, and accessible design aesthetic. The tone should be calm
+and empathetic, given the memorial context.
+Color Palette: Opt for calm colors – for instance, light greys, soft blues, and gentle greens. Avoid
+loud or overly bright colors.
+Typography: Use clear , legible fonts. Ensure text, especially the memorial content and names, is
+easy to read.
+Layout: Design a responsive layout that works well on desktop and mobile browsers. Key pages
+include the homepage/public memorial list, memorial detail page, login/signup pages, and the
+memorial creation form.
+Memorial Page UI: Keep the memorial detail pages uncluttered. Focus on the person's name, 
+photo(s), dates, story, and the charity/donation info. Comments below should be cleanly
+separated from the main memorial content.
+Feedback & Alerts: Provide user feedback for actions:
+After submitting a memorial, show a confirmation message (e.g., “Your memorial has been
+submitted and is pending approval.”).
+After posting a comment, the comment should appear in the list without needing a full page refresh
+(use React state updates).
+Show error messages inline for form validation issues (e.g., “Password is too short” or “Image must
+be JPG/PNG under 5MB”).
+Navigation: Include a simple, intuitive navigation:
+If not logged in: show links to "Home" (public memorials) and "Login/Sign Up".
+If logged in: show "Home", "Create Memorial", and perhaps a "My Account" or logout button. Admin
+users should have a link to the Admin Dashboard.
+Accessibility: Use semantic HTML elements and ARIA labels where appropriate. Ensure color
+contrast is sufficient for readability. Users should be able to navigate the site with keyboard and
+screen readers.
+Footer: Include a footer with placeholders for "Privacy Policy", "Terms of Service", and "Contact
+Us" (actual content can be stubbed out in MVP).
+Branding & Ethics
+Tone and Wording: All user-facing text should be dignified and empathetic. For example, instead
+of a generic success message, use something considerate like “Thank you. Your memorial has been
+created and is awaiting approval.”.
+Content Moderation: Make it clear (perhaps in a tooltip or a note on the memorial creation page)
+that submitted content is subject to review to maintain a respectful environment.
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+4Privacy Respect: If a user chooses a memorial to be link-only (private), honor that setting strictly. Do
+not show private memorials or any of their details in public lists or search results. Only those with
+the direct link (or admins via the dashboard) should be able to view a link-only memorial.
+No Advertisements or Distracting Elements: The memorial pages should not contain any ads or
+promotional content. The focus is solely on the memorial content and the charitable causes.
+Ethical Data Handling: Even in a POC, treat user data with care. Use secure connections (HTTPS) in
+deployment, protect personal data, and ensure that deleting a memorial or comment truly removes
+the content from public view (you can decide whether to hard-delete or soft-delete in the database
+for audit purposes, but the content should disappear from the UI when removed).
+Notes
+Donations & Payments: Do not implement actual payment processing or donation transactions
+in this MVP . All donation links are purely navigational (e.g., linking to an external charity site or a
+placeholder page).
+Group Access: Omit any group-based access or multi-user collaboration features for now. In the
+MVP , each memorial is managed by its single creator (and admins). Features like inviting family
+members to manage a memorial can be planned for future versions.
+Code Quality: Write clean, modular , and well-commented code. Even though this is a prototype, aim
+for readability and maintainability, so the project can be built upon in the future.
+Security & Privacy: Adhere to basic security best practices from the start (input validation, output
+encoding, proper authentication checks on each request, etc.). This MVP will serve as a foundation,
+so it should demonstrate good security principles (e.g., no sensitive data exposure, secure password
+handling, etc.).
+Goal
+Produce a  demo-ready application that stakeholders can interact with to get a feel for the Memorial
+Bridge concept. The core user flows should be fully functional: - Users can sign up, log in, create a memorial
+(with text and images), and see their memorial go into a pending state. - Admin can log in to view and
+approve pending memorials (making them public), manage charities, and oversee user comments. - Visitors
+(or regular users) can browse public memorials, view individual memorial pages, and post comments (with
+the  system  appropriately  handling  free  vs.  Pro  user  capabilities).  This  MVP  should  demonstrate  the
+platform’s key features and set up a strong foundation for future expansion (such as real payments for
+subscriptions, enhanced moderation, group memorial management, etc.). The emphasis is on creating a
+respectful, functional memorial platform connecting memories to charitable causes, with solid architecture
+and code that can be extended going forward. 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+5
