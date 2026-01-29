@@ -1,0 +1,105 @@
+/* Header – minimal, unobtrusive; hero remains focal point */
+
+.header {
+  background-color: rgba(66, 66, 66, 0.92);
+  color: var(--color-warmgray-200);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-inline: var(--spacing-4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 52px;
+  height: 52px;
+}
+
+@media (min-width: 768px) {
+  .inner {
+    padding-inline: var(--spacing-8);
+  }
+}
+
+.logo {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: white;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.logo:hover {
+  color: var(--color-warmgray-200);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.link {
+  font-size: var(--font-size-sm);
+  color: var(--color-warmgray-300);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.link:hover {
+  color: white;
+}
+
+.linkButton {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-warmgray-300);
+  text-decoration: none;
+  padding: var(--spacing-2) var(--spacing-4);
+  border-radius: var(--radius-soft);
+  transition: all var(--transition-fast);
+}
+
+.linkButton:hover {
+  color: white;
+}
+
+.btnPrimary {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: white;
+  background: var(--color-brand-blue-500);
+  padding: var(--spacing-2) var(--spacing-4);
+  border-radius: var(--radius-soft);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btnPrimary:hover {
+  background: var(--color-brand-blue-400);
+}
+
+.btnLogout {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: white;
+  background: var(--color-warmgray-600);
+  padding: var(--spacing-2) var(--spacing-4);
+  border-radius: var(--radius-soft);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btnLogout:hover {
+  background: var(--color-warmgray-500);
+}
+
+.adminBadge {
+  font-weight: var(--font-weight-semibold);
+}

@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-family-body);
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  code {
+    font-family: var(--font-family-mono);
+  }
+}
+
+/* ============================================
+   GLOBAL BUTTON CLASSES – loaded with app
+   High-contrast: white text on dark background
+   Usage: className="btn btn-primary" | "btn btn-success" | "btn btn-secondary"
+   Add "btn-block" for full width.
+   ============================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-6);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.5;
+  border: none;
+  border-radius: var(--radius-gentle);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* Primary – blue (Edit profile, Change password, Login, etc.) */
+.btn-primary {
+  background-color: var(--color-brand-blue-600) !important;
+  color: #fff !important;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-brand-blue-700) !important;
+  box-shadow: var(--shadow-md);
+}
+
+/* Success – green (Save Changes, Update Password) */
+.btn-success {
+  background-color: var(--color-brand-green-600) !important;
+  color: #fff !important;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-success:hover:not(:disabled) {
+  background-color: var(--color-brand-green-700) !important;
+  box-shadow: var(--shadow-md);
+}
+
+/* Secondary – outline (Cancel) */
+.btn-secondary {
+  background-color: transparent !important;
+  color: var(--color-brand-blue-700) !important;
+  border: 2px solid var(--color-brand-blue-400);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--color-brand-blue-50) !important;
+  border-color: var(--color-brand-blue-500);
+}

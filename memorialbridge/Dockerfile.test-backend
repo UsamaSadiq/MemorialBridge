@@ -1,0 +1,20 @@
+# Backend Test Dockerfile
+FROM python:3.11-slim
+
+WORKDIR /workspace
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy all project files
+COPY . .
+
+# Install Python dependencies from backend requirements
+RUN pip install --no-cache-dir -r backend/requirements.txt && \
+    pip install --no-cache-dir asyncpg greenlet aiosqlite pytest pytest-asyncio
+
+# Run tests using custom runner
+CMD ["python", "run_tests.py"]

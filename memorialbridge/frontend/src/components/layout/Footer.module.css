@@ -1,0 +1,143 @@
+/* Footer – left: brand + social; right: links + copyright */
+
+.footer {
+  margin-top: auto;
+  padding: var(--spacing-8) 0;
+  background-color: var(--color-bar);
+  color: var(--color-warmgray-200);
+}
+
+.inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-inline: var(--spacing-6);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-6);
+}
+
+@media (min-width: 768px) {
+  .inner {
+    padding-inline: var(--spacing-10);
+    gap: var(--spacing-8);
+  }
+}
+
+/* Left block: brand + social, left-aligned */
+.left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-1);
+}
+
+.brandName {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: white;
+}
+
+.tagline {
+  font-size: var(--font-size-base);
+  color: var(--color-warmgray-400);
+}
+
+.social {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--color-warmgray-700);
+  color: var(--color-warmgray-300);
+  transition: all var(--transition-fast);
+}
+
+.socialLink:hover {
+  background: var(--color-brand-blue-500);
+  color: white;
+}
+
+.socialIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Right block: links + copyright, right-aligned */
+.right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--spacing-2);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-3) var(--spacing-6);
+}
+
+.link {
+  font-size: var(--font-size-base);
+  color: var(--color-warmgray-300);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.link:hover {
+  color: white;
+}
+
+.copyright {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-warmgray-500);
+  text-align: right;
+}
+
+/* Stack on small screens, keep alignment */
+@media (max-width: 639px) {
+  .inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-4);
+  }
+
+  .left {
+    align-items: flex-start;
+  }
+
+  .right {
+    align-items: flex-start;
+    padding-top: var(--spacing-3);
+    border-top: 1px solid var(--color-warmgray-700);
+  }
+
+  .links {
+    justify-content: flex-start;
+  }
+
+  .copyright {
+    text-align: left;
+  }
+}

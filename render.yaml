@@ -1,0 +1,42 @@
+# Render Blueprint – Memorial Bridge v2 (branch: memorialbridge-v2)
+# Use v2-prefixed names so this stack is separate from the existing main deployment.
+# Repo root: MemorialBridge_Vibed. App under memorialbridge/; rootDir below.
+
+databases:
+  - name: memorialbridge-v2-db
+    databaseName: memorialbridge_v2
+    user: memorialbridge_v2
+    plan: free
+
+services:
+  - type: web
+    name: memorialbridge-v2-api
+    runtime: python
+    rootDir: memorialbridge/backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: memorialbridge-v2-db
+          property: connectionString
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: false
+      - key: CORS_ORIGINS
+        sync: false
+
+  - type: web
+    name: memorialbridge-v2-web
+    runtime: static
+    rootDir: memorialbridge/frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        sync: false
